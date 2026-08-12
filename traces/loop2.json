@@ -1,0 +1,61 @@
+{
+  "id": 2,
+  "name": "圈 2 · 听懂反馈",
+  "subtitle": "模糊反馈 → Agent 反问澄清 → 边界收窄 → 账期提醒上线",
+  "ratio": { "human": 50, "agent": 50 },
+  "trigger": {
+    "label": "输入 · 负责人反馈（评审会上一句话）",
+    "body": "李总：提取做得不错。但账期得有人盯啊——提醒要发给对应的人，不同的人负责不同的合同。"
+  },
+  "steps": [
+    {
+      "actor": "agent",
+      "kind": "clarify",
+      "title": "Agent 主动反问澄清（不直接动手）",
+      "body": "收到反馈「账期提醒发给对应的人」。语义存在三处缺口，需要澄清：\n\n1.「对应的人」指谁？现有组织数据里，合同可关联的角色有：法务复核人 / 业务对接人 / 部门负责人。\n2.「不同的人负责不同的合同」——按什么维度分？按客户？按合同类型？按金额区间？\n3. 提醒触发时机：账期到期前 N 天提醒？N 是多少？\n\n在确认前，我不会改动任何代码。"
+    },
+    {
+      "actor": "human",
+      "kind": "input",
+      "title": "负责人确认 · 李总",
+      "body": "本期只发法务复核人，按流程表里的「负责人」字段来。到期前 7 天提醒。"
+    },
+    {
+      "actor": "agent",
+      "kind": "confirm",
+      "title": "Agent 复述边界，二次确认",
+      "body": "边界确认：\n· 本期仅实现「账期到期前 7 天，提醒流程表中登记的法务复核人」。\n· 业务对接人、部门负责人的分发规则，待组织维度数据明确后另立 Issue（已记录为 #18）。\n· 提醒文案模板需人工审核后才允许发送。\n\n是这样吗？——李总：对。"
+    },
+    {
+      "actor": "mixed",
+      "kind": "code",
+      "title": "人机协作开发 · payment_reminder.py",
+      "lang": "diff",
+      "body": "+ # --- 以下由 Agent 生成 ---\n+ def daily_scan():\n+     rows = sheet_reader.query(FLOW_SHEET,\n+         where=\"payment_term - today <= 7 AND status = 'active'\")\n+     for row in rows:\n+         notify.send(role=\"legal_reviewer\",\n+                     user=row.owner,\n+                     template=\"payment_due_7d\",\n+                     payload=row)\n+ \n± # --- 人工修改：同一法务名下多份合同到期，合并为一条汇总提醒，避免轰炸 ---\n±     for owner, rows in group_by(rows, \"owner\"):\n±         notify.send_digest(role=\"legal_reviewer\",\n±                            user=owner,\n±                            template=\"payment_due_7d_digest\",\n±                            payload=rows)\n+ \n+ schedule(cron=\"0 9 * * *\", job=daily_scan)   # 每早 9 点扫描\n+ ...                                          # 余下 30 行略"
+    },
+    {
+      "actor": "agent",
+      "kind": "review",
+      "title": "Agent 自审",
+      "body": "✓ 复用圈 1 的流程表读取与圈 1 沉淀的置信度边界，未改动提取链路\n✓ 提醒模板「payment_due_7d_digest」已提交人工审核（模板未通过前不发送）\n✓ 新增评估用例 2 条：模糊指派 → 角色枚举 → 边界确认 的澄清路径\n⚠ 提醒：流程表中 5 份历史合同「负责人」字段为空 → 兜底策略：发法务组长并标注待补录"
+    },
+    {
+      "actor": "human",
+      "kind": "approve",
+      "title": "人工审核 · 李总",
+      "body": "审核意见：通过。\n1. 合并汇总提醒的改动好，这正是人比 Agent 更懂业务体感的地方。\n2. 负责人为空的兜底发组长，可以。\n3. 文案模板我已审，准许启用。\n\n操作：批准 MR !15，合并上线。"
+    },
+    {
+      "actor": "system",
+      "kind": "deploy",
+      "title": "上线",
+      "body": "payment_reminder v1 已上线。\n每日 09:00 扫描，到期前 7 天汇总提醒法务复核人；负责人缺失的合同提醒法务组长并标注待补录。\n上线首周：发出提醒 23 条，零误报，法务确认及时率从 61% → 94%。"
+    }
+  ],
+  "sediments": [
+    "澄清式交互 Skill v1（模糊指派 → 角色枚举 → 边界确认 → 二次复述）",
+    "notify 组件入组件库（按角色分发 / 汇总摘要 / 模板人工审核闸门）",
+    "评估用例 +2：模糊反馈澄清路径回归",
+    "能力边界表第 2 行：定时提醒类 · 辅助级（需人工审核）· 首周零误报"
+  ]
+}

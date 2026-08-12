@@ -1,0 +1,49 @@
+{
+  "id": 3,
+  "name": "圈 3 · 接近自治",
+  "subtitle": "新需求 → Agent 检索历史资产自主开发 → Agent 评审 → 人工一键确认",
+  "ratio": { "human": 5, "agent": 95 },
+  "trigger": {
+    "label": "输入 · 新需求（法务提出，表述已接近结构化）",
+    "body": "王律师：希望系统能提取合同里的准入条件关键词——比如「独家」「排他」「最惠国」——命中就在流程表里标红，并且审核结果同步发给业务组。"
+  },
+  "steps": [
+    {
+      "actor": "agent",
+      "kind": "retrieve",
+      "title": "Agent 检索历史代码、约束与组件",
+      "body": "检索资产库：\n· contract_extract 工作流（圈 1）→ 字段提取管线可直接复用，关键词提取是其特例\n· notify 组件（圈 2）→ 已支持按角色分发；「业务组」角色在圈 2 澄清中已枚举登记\n· 约束记录：流程表写入必须带置信度（圈 1 双审记录）；对外通知模板需人工已审（圈 2）\n· 组件库：pdf_parse / field_extract / sheet_writer / notify\n\n结论：无需新建管线。改动 = 关键词配置 + extract 管线挂接 + notify 增加业务组路由。预估 < 120 行，落入「自治交付」边界。"
+    },
+    {
+      "actor": "agent",
+      "kind": "code",
+      "title": "Agent 自主开发（全程无人工介入编码）",
+      "lang": "diff",
+      "body": "+ # --- 本圈全部代码由 Agent 生成 ---\n+ # keywords.yaml（外置配置，符合「共性组件下沉」约束）\n+ #   独家: [独家, 独家代理, 独家授权]\n+ #   排他: [排他, 排他性]\n+ #   最惠国: [最惠国, 最惠国待遇, 最惠国条款]\n+ \n+ def match_access_keywords(text: str) -> list[KeywordHit]:\n+     hits = []\n+     for kw, synonyms in load(\"keywords.yaml\").items():\n+         for m in find_any(text, synonyms):\n+             hits.append(KeywordHit(kw, context=text[m-50:m+50]))  # 命中上下文前后 50 字\n+     return hits\n+ \n+ # 挂接圈 1 管线 + 圈 2 通知路由\n+ pipeline.after(\"field_extract\", match_access_keywords)\n+ pipeline.on(\"keyword_hit\", sheet_writer.flag_red)\n+ pipeline.on(\"review_done\", notify.route(role=\"business_group\"))\n+ ...                                    # 余下 80 行略"
+    },
+    {
+      "actor": "reviewer",
+      "kind": "review",
+      "title": "评审组 Agent 审查 MR !19",
+      "body": "评审结论：通过（2 条建议，均已处理）\n✓ 完整复用 contract_extract 管线与 notify 组件，未重复造轮子\n✓ 关键词表外置为 yaml 配置，业务可自行维护，符合「共性组件下沉」约束\n✓ 命中结果带置信度写入流程表，遵守圈 1 沉淀的写入约束\n\n建议 1：关键词命中应记录上下文（前后 50 字），便于法务复核 → 已采纳并实现\n建议 2：「最惠国」存在多种写法 → 已采纳加同义词表；同义词自动扩召另立优化 Issue #21"
+    },
+    {
+      "actor": "human",
+      "kind": "approve",
+      "title": "人工一键确认 · 李总",
+      "body": "本圈人工未读代码全文，只看三样东西：\n1. 检索记录 —— 改动确实落在已验证资产之上；\n2. 评审组 Agent 意见 —— 通过，两条建议均已闭环；\n3. 回归报告 —— 圈 1/圈 2 用例全绿，新增用例 8 条通过。\n\n操作：一键确认，批准上线。耗时 40 秒。"
+    },
+    {
+      "actor": "system",
+      "kind": "deploy",
+      "title": "上线",
+      "body": "access_keywords v1 已上线。\n命中准入关键词的合同在流程表自动标红，审核结果自动同步业务组。\n从需求提出到上线：3.5 小时（圈 1 同类改动耗时 3 天）。"
+    }
+  ],
+  "sediments": [
+    "能力边界表第 3 行：关键词提取 + 通知路由类 · 自治级（人工仅确认）· 成功率 1/1",
+    "Agent 评审规则 v1（复用检查 / 约束遵守 / 用例回归 三段式）",
+    "自治交付准入条件：复用已验证组件 且 改动 < 150 行 且 回归全绿",
+    "优化 Issue #21：关键词同义词自动扩召"
+  ]
+}

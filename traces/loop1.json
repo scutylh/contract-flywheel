@@ -1,0 +1,55 @@
+{
+  "id": 1,
+  "name": "圈 1 · 从 0 到可用",
+  "subtitle": "会议纪要 → 需求单 → 人机协作开发 → 双审上线",
+  "ratio": { "human": 70, "agent": 30 },
+  "trigger": {
+    "label": "输入 · 法务例会纪要（2026-07-28）",
+    "body": "参会：法务 王律师 / 业务运营 张姐 / 系统负责人 李总\n\n王律师：现在每份合同审批都要人肉翻 PDF，一份二三十页，金额、账期、付款条件全靠肉眼核对，一天最多审 8 份，已经积压 40 多份。\n张姐：业务侧经常问“我的合同到哪了”，我们也答不上来。\n李总：先把关键信息提取做出来——金额、账期、付款条件三项，提取出来整理进现有的合同流程表，法务在表里复核。其他以后再说。"
+  },
+  "steps": [
+    {
+      "actor": "agent",
+      "kind": "extract",
+      "title": "需求结构化提取",
+      "body": "需求单 #REQ-2026-0047\n来源：法务例会纪要 2026-07-28\n目标：合同关键信息自动提取，法务复核提效\n提取字段：合同金额 / 账期 / 付款条件\n输出：写入现有「合同流程表」（新增 3 列 + 提取置信度 + 原文定位）\n验收标准：近 3 个月 50 份历史合同回归，三项字段准确率 ≥ 95%\n本期边界：不做审批流改造、不做对外通知"
+    },
+    {
+      "actor": "agent",
+      "kind": "issue",
+      "title": "生成 Issue #12",
+      "body": "[REQ-2026-0047] 合同关键信息提取（金额/账期/付款条件）\n\n- 新增 contract_extract 工作流：PDF → 文本解析 → 字段提取 → 写流程表\n- 每条提取结果带原文定位（页码 + 段落），供法务一键复核\n- 提取置信度低于阈值的结果自动标黄，强制人工确认\n- 验收：50 份历史合同回归，准确率 ≥ 95%"
+    },
+    {
+      "actor": "mixed",
+      "kind": "code",
+      "title": "人机协作开发 · contract_extract.py",
+      "lang": "diff",
+      "body": "+ # --- 以下由 Agent 生成 ---\n+ def extract_fields(pdf_path: str) -> ExtractResult:\n+     text = pdf_parse(pdf_path)                      # 复用 pdf_parse 组件\n+     amount = match_amount(text)                     # 金额（含大小写）\n+     term = match_payment_term(text)                 # 账期\n+     conds = match_payment_conditions(text)          # 付款条件\n+     return ExtractResult(amount, term, conds,\n+         confidence=score(text), loc=locate(text))\n+ \n± # --- 人工修改：金额大小写不一致时以中文大写为准（李总评审意见） ---\n±     if amount.has_conflict():\n±         amount = amount.prefer_uppercase_cn()\n± \n± # --- 人工修改：置信度阈值 0.85 → 0.92，低于阈值必须人工确认 ---\n± CONFIDENCE_THRESHOLD = 0.92\n+ \n+ def run(contract_id: str):\n+     result = extract_fields(fetch(contract_id))\n+     sheet_writer.append_row(FLOW_SHEET, result)     # 写入流程表\n+     ...                                             # 余下 40 行略"
+    },
+    {
+      "actor": "agent",
+      "kind": "review",
+      "title": "Agent 自审（提交 MR 前）",
+      "body": "✓ 字段缺失兜底逻辑已覆盖（未约定 → 显式标记「未约定」，不留空）\n✓ 回归用例 50 份历史合同全部通过，准确率 96.0%\n⚠ 提醒：付款条件存在「分期付款」表述未覆盖 → 已补充 3 条用例并修复\n⚠ 提醒：扫描件 PDF 无文本层 → 已在 Issue 中标注为已知边界，本期走人工录入"
+    },
+    {
+      "actor": "human",
+      "kind": "approve",
+      "title": "人工审核 · 李总",
+      "body": "审核意见：通过。\n1. 金额大小写不一致的冲突处理已按评审意见修改，符合财务惯例。\n2. 置信度阈值 0.92 合理，标黄强制人工确认这条保留——宁可慢，不可错。\n3. 扫描件边界已知悉，下期评估 OCR 组件。\n\n操作：批准 MR !12，合并上线。"
+    },
+    {
+      "actor": "system",
+      "kind": "deploy",
+      "title": "上线",
+      "body": "contract_extract v1 已上线。\n法务复核入口：合同流程表（新增 金额 / 账期 / 付款条件 / 置信度 / 原文定位 5 列）。\n积压 40 份合同批量重跑完成，37 份自动通过，3 份标黄进入人工确认。"
+    }
+  ],
+  "sediments": [
+    "需求单模板 v1（来源/目标/字段/验收/边界 五段式）",
+    "contract-extract Skill v1（字段提取 + 原文定位 + 置信度标黄）",
+    "双审流程记录（Agent 自审 → 人工审核）",
+    "能力边界表第 1 行：字段提取类 · 辅助级（需人工审核）· 准确率 96%"
+  ]
+}
