@@ -44,47 +44,54 @@
     </div>
     <div class="flywheel-card">
       <div class="flywheel-svg">
-        <svg viewBox="0 0 340 340" role="img" aria-label="三圈飞轮示意图">
+        <svg viewBox="0 0 420 320" role="img" aria-label="三圈飞轮持续改进示意图">
           <defs>
             <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
               <path d="M 0 1 L 9 5 L 0 9 z" fill="#2563eb"></path>
             </marker>
+            <marker id="arrow-light" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M 0 1 L 9 5 L 0 9 z" fill="#b7c6de"></path>
+            </marker>
           </defs>
-          <!-- 旋转虚线环：飞轮持续转动 -->
-          <g class="spin">
-            <circle cx="170" cy="170" r="132" fill="none" stroke="#c7d4ea" stroke-width="1.5" stroke-dasharray="4 7"></circle>
-          </g>
-          <!-- 三段弧 + 箭头（顺时针） -->
-          <path d="M 244 42 A 132 132 0 0 1 300 190" fill="none" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arrow)"></path>
-          <path d="M 230 285 A 132 132 0 0 1 110 285" fill="none" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arrow)"></path>
-          <path d="M 40 190 A 132 132 0 0 1 96 42" fill="none" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arrow)"></path>
-          <!-- 中心 -->
-          <circle cx="170" cy="170" r="46" fill="#f8fafc" stroke="#e3e7ee" stroke-width="1.5"></circle>
-          <text x="170" y="166" text-anchor="middle" class="fw-label">合同审核</text>
-          <text x="170" y="184" text-anchor="middle" class="fw-sub">资产持续沉淀</text>
-          <!-- 圈 1 · 顶部 -->
+          <!-- 上升基线：自治程度逐圈抬高 -->
+          <path d="M 32 282 L 388 58" fill="none" stroke="#c7d4ea" stroke-width="1.5" stroke-dasharray="4 6" marker-end="url(#arrow-light)"></path>
+          <!-- 圈间流向：沉淀物成为下一圈起点 -->
+          <path d="M 126 190 Q 148 180 170 174" fill="none" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arrow)"></path>
+          <path d="M 250 130 Q 270 120 289 115" fill="none" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arrow)"></path>
+          <text x="148" y="160" text-anchor="middle" class="fw-flow">沉淀：模板 · Skill · 边界</text>
+          <text x="269" y="102" text-anchor="middle" class="fw-flow">沉淀：澄清 Skill · notify 组件</text>
+          <!-- 资产回流：下一圈起点更高 -->
+          <path d="M 386 105 C 430 160 420 250 330 280 C 250 305 120 300 52 250" fill="none" stroke="#b7c6de" stroke-width="1.5" stroke-dasharray="5 5" marker-end="url(#arrow-light)"></path>
+          <text x="235" y="309" text-anchor="middle" class="fw-flow">资产回流 · 下一圈起点更高</text>
+          <!-- 圈 1 -->
           <g class="fw-node" data-goto="loop-1">
-            <circle class="core" cx="170" cy="38" r="30" fill="#ffffff" stroke="#b45309" stroke-width="2"></circle>
-            <text x="170" y="42" text-anchor="middle" class="fw-label">圈 1</text>
-            <text x="170" y="82" text-anchor="middle" class="fw-sub">从 0 到可用 · 人70/Agent30</text>
+            <circle class="spin-slow" cx="88" cy="218" r="31" fill="none" stroke="#e3d5c2" stroke-width="1.5" stroke-dasharray="3 6"></circle>
+            <circle class="core" cx="88" cy="218" r="40" fill="#ffffff" stroke="#b45309" stroke-width="2"></circle>
+            <text x="88" y="222" text-anchor="middle" class="fw-label">圈 1</text>
+            <text x="88" y="272" text-anchor="middle" class="fw-sub">从 0 到可用</text>
+            <text x="88" y="286" text-anchor="middle" class="fw-sub">人 70 · Agent 30</text>
           </g>
-          <!-- 圈 2 · 右下 -->
+          <!-- 圈 2 -->
           <g class="fw-node" data-goto="loop-2">
-            <circle class="core" cx="284" cy="236" r="30" fill="#ffffff" stroke="#7c3aed" stroke-width="2"></circle>
-            <text x="284" y="240" text-anchor="middle" class="fw-label">圈 2</text>
-            <text x="284" y="280" text-anchor="middle" class="fw-sub">听懂反馈 · 人50/Agent50</text>
+            <circle class="spin-slow" cx="212" cy="152" r="36" fill="none" stroke="#ddd3f0" stroke-width="1.5" stroke-dasharray="3 6"></circle>
+            <circle class="core" cx="212" cy="152" r="45" fill="#ffffff" stroke="#6d28d9" stroke-width="2"></circle>
+            <text x="212" y="156" text-anchor="middle" class="fw-label">圈 2</text>
+            <text x="212" y="212" text-anchor="middle" class="fw-sub">听懂反馈</text>
+            <text x="212" y="226" text-anchor="middle" class="fw-sub">人 50 · Agent 50</text>
           </g>
-          <!-- 圈 3 · 左下 -->
+          <!-- 圈 3 -->
           <g class="fw-node" data-goto="loop-3">
-            <circle class="core" cx="56" cy="236" r="30" fill="#ffffff" stroke="#0f766e" stroke-width="2"></circle>
-            <text x="56" y="240" text-anchor="middle" class="fw-label">圈 3</text>
-            <text x="56" y="280" text-anchor="middle" class="fw-sub">接近自治 · Agent95/人5</text>
+            <circle class="spin-slow" cx="336" cy="92" r="41" fill="none" stroke="#c4dcd8" stroke-width="1.5" stroke-dasharray="3 6"></circle>
+            <circle class="core" cx="336" cy="92" r="50" fill="#ffffff" stroke="#0f766e" stroke-width="2"></circle>
+            <text x="336" y="96" text-anchor="middle" class="fw-label">圈 3</text>
+            <text x="336" y="156" text-anchor="middle" class="fw-sub">接近自治</text>
+            <text x="336" y="170" text-anchor="middle" class="fw-sub">人 5 · Agent 95</text>
           </g>
         </svg>
       </div>
       <div class="flywheel-side">
-        <h3>主角不是功能，是人机分工比例</h3>
-        <p>三圈做的是同一套合同审核系统的三次迭代。功能每次都更复杂，但人的参与度每次都更低——因为上一圈的沉淀物让 Agent 的自治边界扩大了一格。</p>
+        <h3>主角不是功能，是持续改进的结构</h3>
+        <p>飞轮不是转一圈就停：每一圈的沉淀物——Skill、组件、约束、评估用例——直接成为下一圈的起点资产，所以三圈做同一套系统，人重复做的事越来越少、自治边界一圈比一圈大。持续改进不是口号，是这个回路的结构。</p>
         <div class="ratio-row" data-goto="loop-1">
           <span class="ratio-name">圈 1 · 从 0 到可用</span>
           <div class="ratio-bar"><div class="h" style="width:70%"></div><div class="a" style="width:30%"></div></div>

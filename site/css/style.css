@@ -64,15 +64,16 @@ section { padding: 40px 0; }
   background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
   padding: 32px; display: flex; gap: 40px; align-items: center; flex-wrap: wrap;
 }
-.flywheel-svg { flex: 0 0 340px; }
+.flywheel-svg { flex: 0 0 420px; }
 .flywheel-svg svg { width: 100%; height: auto; display: block; }
-.spin { transform-origin: 170px 170px; animation: spin 48s linear infinite; }
+.spin-slow { transform-box: fill-box; transform-origin: center; animation: spin 42s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 .fw-node { cursor: pointer; }
 .fw-node circle { transition: none; }
 .fw-node:hover circle.core { stroke-width: 3; }
-.fw-label { font-size: 13px; font-weight: 700; fill: var(--ink); }
+.fw-label { font-size: 14px; font-weight: 700; fill: var(--ink); }
 .fw-sub { font-size: 10.5px; fill: var(--muted); }
+.fw-flow { font-size: 9.5px; fill: #7c8aa5; }
 .flywheel-side { flex: 1 1 300px; min-width: 260px; }
 .flywheel-side h3 { font-size: 17px; margin-bottom: 10px; }
 .flywheel-side p { color: var(--muted); font-size: 14px; margin-bottom: 14px; }
@@ -89,12 +90,28 @@ section { padding: 40px 0; }
 .vision-fold summary { cursor: pointer; color: var(--accent); font-weight: 600; }
 .vision-fold p { margin-top: 8px; font-size: 13px; }
 
-/* ---------- loop sections ---------- */
+/* ---------- loop sections（左圈右步骤） ---------- */
 .loop-card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
-.loop-head { padding: 24px 28px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; }
-.loop-head h3 { font-size: 19px; }
-.loop-head .sub { color: var(--muted); font-size: 13px; margin-top: 4px; }
-.loop-body { padding: 24px 28px; }
+.loop-split { display: flex; gap: 28px; align-items: flex-start; padding: 24px 28px; }
+
+.loop-viz { flex: 0 0 216px; position: sticky; top: 68px; }
+.loop-viz .ring { width: 100%; height: auto; display: block; margin-bottom: 14px; }
+.ring-loop { font-size: 21px; font-weight: 800; fill: var(--ink); }
+.ring-ratio { font-size: 10.5px; fill: var(--muted); }
+.seg.lit { stroke-width: 15; }
+.loop-viz h3 { font-size: 17px; margin-bottom: 4px; }
+.loop-viz .sub { color: var(--muted); font-size: 12.5px; margin-bottom: 12px; }
+.viz-ratio { margin-bottom: 14px; }
+.traits { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.traits li {
+  font-size: 12px; color: var(--ink); background: #f8fafc;
+  border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px;
+}
+.traits li::before { content: "· "; color: var(--accent); font-weight: 800; }
+
+.loop-main { flex: 1; min-width: 0; }
+
+.step.current .step-body { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
 
 .trigger {
   background: #f8fafc; border: 1px solid var(--line); border-left: 4px solid var(--human);
@@ -198,4 +215,6 @@ footer a { color: var(--accent); text-decoration: none; }
 @media (max-width: 720px) {
   .hero h1 { font-size: 26px; }
   .flywheel-svg { flex: 1 1 100%; }
+  .loop-split { flex-direction: column; }
+  .loop-viz { position: static; flex: 1 1 100%; max-width: 240px; }
 }
