@@ -200,8 +200,28 @@
     });
   }
 
+  /* 右侧页码圆点：随滚动高亮当前页 */
+  function bindDots() {
+    var pages = document.querySelectorAll("[data-page]");
+    var dots = document.querySelectorAll(".pagedots a[data-page]");
+    if (!pages.length || !dots.length) return;
+    var map = {};
+    dots.forEach(function (d) { map[d.getAttribute("data-page")] = d; });
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          dots.forEach(function (d) { d.classList.remove("on"); });
+          var d = map[e.target.getAttribute("data-page")];
+          if (d) d.classList.add("on");
+        }
+      });
+    }, { rootMargin: "-45% 0px -50% 0px", threshold: 0 });
+    pages.forEach(function (p) { io.observe(p); });
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     renderLoops();
     bindFlywheel();
+    bindDots();
   });
 })();

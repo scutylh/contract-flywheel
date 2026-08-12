@@ -21,7 +21,18 @@
   </div>
 </nav>
 
-<header class="hero" id="top">
+<div class="pagedots" aria-label="页面导航">
+  <a href="#top" data-page="top"><span class="lbl">首页</span><span class="d"></span></a>
+  <a href="#overview" data-page="overview"><span class="lbl">飞轮总览</span><span class="d"></span></a>
+  <a href="#loop-1" data-page="loop-1"><span class="lbl">圈 1</span><span class="d"></span></a>
+  <a href="#loop-2" data-page="loop-2"><span class="lbl">圈 2</span><span class="d"></span></a>
+  <a href="#loop-3" data-page="loop-3"><span class="lbl">圈 3</span><span class="d"></span></a>
+  <a href="#engineering" data-page="engineering"><span class="lbl">工程设计</span><span class="d"></span></a>
+  <a href="#plan90" data-page="plan90"><span class="lbl">90 天</span><span class="d"></span></a>
+  <a href="#appendix" data-page="appendix"><span class="lbl">附录</span><span class="d"></span></a>
+</div>
+
+<header class="hero page page--center" id="top" data-page="top">
   <div class="wrap">
     <div class="kicker">入职前作业 · AGENT 工程</div>
     <h1>从一段会议纪要到自进化飞轮<br>—— 合同审核 Agent 的三圈迭代</h1>
@@ -32,10 +43,11 @@
       <span>2026-08</span>
     </div>
   </div>
+  <div class="scroll-hint"><span>向下滚动</span><span class="chev"></span></div>
 </header>
 
 <!-- ============ 屏 2 · 飞轮总览 ============ -->
-<section id="overview">
+<section id="overview" class="page" data-page="overview">
   <div class="wrap">
     <div class="sec-head">
       <div class="no">01 · 飞轮总览</div>
@@ -120,25 +132,43 @@
   </div>
 </section>
 
-<!-- ============ 屏 3 · 三圈详情（JS 渲染） ============ -->
-<section id="loops">
+<!-- ============ 屏 3-5 · 三圈回放（JS 渲染） ============ -->
+<section id="page-loop-1" class="page" data-page="loop-1">
   <div class="wrap">
     <div class="sec-head">
-      <div class="no">02 · 三圈完整回放</div>
-      <h2>每一圈的执行轨迹，逐步流出</h2>
+      <div class="no">02 · 圈 1</div>
+      <h2>从 0 到可用</h2>
       <p>点击「运行回放」，按真实执行顺序逐条查看：输入、Agent 动作、人工介入点、审核记录与沉淀物。</p>
     </div>
-    <div id="loop-1" style="margin-bottom:32px"></div>
-    <div id="loop-2" style="margin-bottom:32px"></div>
+    <div id="loop-1"></div>
+  </div>
+</section>
+
+<section id="page-loop-2" class="page" data-page="loop-2">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="no">03 · 圈 2</div>
+      <h2>听懂反馈</h2>
+    </div>
+    <div id="loop-2"></div>
+  </div>
+</section>
+
+<section id="page-loop-3" class="page" data-page="loop-3">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="no">04 · 圈 3</div>
+      <h2>接近自治</h2>
+    </div>
     <div id="loop-3"></div>
   </div>
 </section>
 
-<!-- ============ 屏 4 · 工程设计 ============ -->
-<section id="engineering">
+<!-- ============ 屏 6 · 工程设计 ============ -->
+<section id="engineering" class="page" data-page="engineering">
   <div class="wrap">
     <div class="sec-head">
-      <div class="no">03 · 工程设计</div>
+      <div class="no">05 · 工程设计</div>
       <h2>让比例变化可信的三块地基</h2>
       <p>飞轮能转起来，靠的不是模型能力突进，而是权限、回放评估、资产沉淀三套机制让每一步都可控、可复盘、可复用。</p>
     </div>
@@ -230,10 +260,10 @@
 </section>
 
 <!-- ============ 屏 5 · 入职 90 天 ============ -->
-<section id="plan90">
+<section id="plan90" class="page page--center" data-page="plan90">
   <div class="wrap">
     <div class="sec-head">
-      <div class="no">04 · 入职 90 天</div>
+      <div class="no">06 · 入职 90 天</div>
       <h2>把本演示的三圈，换成真实中台的三圈</h2>
       <p>贴着现有中台（HR / 薪资 / 报销，已有真实用户）推进，合同审核可作为第四个切片接入。</p>
     </div>
@@ -270,10 +300,10 @@
 </section>
 
 <!-- ============ 屏 6 · 附录 ============ -->
-<section id="appendix">
+<section id="appendix" class="page" data-page="appendix">
   <div class="wrap">
     <div class="sec-head">
-      <div class="no">05 · 附录</div>
+      <div class="no">07 · 附录</div>
       <h2>这份作业本身就是一次 harness 实践</h2>
     </div>
     <div class="appendix-card">
