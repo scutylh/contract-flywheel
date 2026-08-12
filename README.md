@@ -19,12 +19,13 @@
 ├── scripts/
 │   └── build-traces.mjs # traces/*.json → site/js/traces.js 打包脚本
 └── site/                # 纯静态演示站（nginx 直发即可）
-    ├── index.html       # 门户：飞轮总览 + 工程设计 + 90 天 + 附录
-    ├── loops/           # 每圈独立回放页（执行轨迹 + 播放 + 沉淀）
+    ├── index.html       # 第 1 章 首页：hero + 飞轮三圈 + 翻页提示
+    ├── loops/           # 第 2-4 章：每圈一页（人机分工矩阵 → 回放横轴 → 产品演示）
     │   ├── loop-1.html
     │   ├── loop-2.html
-    │   └── loop-3.html
-    └── products/        # 每圈交付的产品页（界面 mock + 验收数据）
+    │   └── loop-3.html  # 末尾含三圈「演一遍」recap
+    ├── plan90.html      # 第 5 章：入职 90 天 + 三张表（权限/能力边界/回放评估）
+    └── appendix.html    # 第 6 章：附录（开发方式 + 源码 + 诚实声明）
 ```
 
 ## 本地预览

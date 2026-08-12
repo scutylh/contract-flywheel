@@ -6,297 +6,105 @@
 <title>从一段会议纪要到自进化飞轮 —— 合同审核 Agent 的三圈迭代 · 于林海</title>
 <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body data-chapter="1" data-base="">
 
-<nav>
-  <div class="wrap">
-    <a class="brand" href="#top">contract-flywheel</a>
-    <a class="navlink" href="#overview">飞轮总览</a>
-    <a class="navlink" href="loops/loop-1.html">圈 1</a>
-    <a class="navlink" href="loops/loop-2.html">圈 2</a>
-    <a class="navlink" href="loops/loop-3.html">圈 3</a>
-    <a class="navlink" href="#engineering">工程设计</a>
-    <a class="navlink" href="#plan90">入职 90 天</a>
-    <a class="navlink" href="#appendix">附录</a>
-  </div>
-</nav>
+<div class="topbar" data-topbar></div>
 
-<div class="pagedots" aria-label="页面导航">
-  <a href="#top" data-page="top"><span class="lbl">首页</span><span class="d"></span></a>
-  <a href="#overview" data-page="overview"><span class="lbl">飞轮总览</span><span class="d"></span></a>
-  <a href="#engineering" data-page="engineering"><span class="lbl">工程设计</span><span class="d"></span></a>
-  <a href="#plan90" data-page="plan90"><span class="lbl">90 天</span><span class="d"></span></a>
-  <a href="#appendix" data-page="appendix"><span class="lbl">附录</span><span class="d"></span></a>
-</div>
+<main class="chapter-body">
 
-<header class="hero page page--center" id="top" data-page="top">
-  <div class="wrap">
-    <div class="kicker">入职前作业 · AGENT 工程</div>
-    <h1>从一段会议纪要到自进化飞轮<br>—— 合同审核 Agent 的三圈迭代</h1>
-    <p class="oneline">别人交规划，<strong>我交的是规划的第一步已经在跑的样子</strong>：同一套合同审核系统迭代三圈，人机分工从「人 70% / Agent 30%」走到「Agent 95% / 人仅确认」。</p>
-    <div class="meta">
-      <span>作者：于林海 · 15767206657</span>
-      <span>源码：<a href="https://github.com/scutylh/contract-flywheel" target="_blank" rel="noopener">github.com/scutylh/contract-flywheel</a></span>
-      <span>2026-08</span>
-    </div>
-  </div>
-  <div class="scroll-hint"><span>向下滚动</span><span class="chev"></span></div>
-</header>
-
-<!-- ============ 屏 2 · 飞轮总览 ============ -->
-<section id="overview" class="page" data-page="overview">
-  <div class="wrap">
-    <div class="sec-head">
-      <div class="no">01 · 飞轮总览</div>
-      <h2>同一个系统，三圈迭代，人逐步退出执行层</h2>
-      <p>每一圈的输入都来自上一圈的真实使用反馈；每一圈的产出——Skill、组件、约束、能力边界——都沉淀为下一圈的资产。点击任意一圈，进入该圈的完整执行回放。</p>
-    </div>
-    <div class="flywheel-card">
-      <div class="flywheel-svg">
-        <svg viewBox="0 0 420 320" role="img" aria-label="三圈飞轮持续改进示意图">
-          <defs>
-            <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-              <path d="M 0 1 L 9 5 L 0 9 z" fill="#2563eb"></path>
-            </marker>
-            <marker id="arrow-light" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-              <path d="M 0 1 L 9 5 L 0 9 z" fill="#b7c6de"></path>
-            </marker>
-          </defs>
-          <!-- 上升基线：自治程度逐圈抬高 -->
-          <path d="M 32 282 L 388 58" fill="none" stroke="#c7d4ea" stroke-width="1.5" stroke-dasharray="4 6" marker-end="url(#arrow-light)"></path>
-          <!-- 圈间流向：沉淀物成为下一圈起点 -->
-          <path d="M 126 190 Q 148 180 170 174" fill="none" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arrow)"></path>
-          <path d="M 250 130 Q 270 120 289 115" fill="none" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arrow)"></path>
-          <text x="148" y="160" text-anchor="middle" class="fw-flow">沉淀：模板 · Skill · 边界</text>
-          <text x="269" y="102" text-anchor="middle" class="fw-flow">沉淀：澄清 Skill · notify 组件</text>
-          <!-- 资产回流：下一圈起点更高 -->
-          <path d="M 386 105 C 430 160 420 250 330 280 C 250 305 120 300 52 250" fill="none" stroke="#b7c6de" stroke-width="1.5" stroke-dasharray="5 5" marker-end="url(#arrow-light)"></path>
-          <text x="235" y="309" text-anchor="middle" class="fw-flow">资产回流 · 下一圈起点更高</text>
-          <!-- 圈 1 -->
-          <g class="fw-node" data-href="loops/loop-1.html">
-            <circle class="spin-slow" cx="88" cy="218" r="31" fill="none" stroke="#e3d5c2" stroke-width="1.5" stroke-dasharray="3 6"></circle>
-            <circle class="core" cx="88" cy="218" r="40" fill="#ffffff" stroke="#b45309" stroke-width="2"></circle>
-            <text x="88" y="222" text-anchor="middle" class="fw-label">圈 1</text>
-            <text x="88" y="272" text-anchor="middle" class="fw-sub">从 0 到可用</text>
-            <text x="88" y="286" text-anchor="middle" class="fw-sub">人 70 · Agent 30</text>
-          </g>
-          <!-- 圈 2 -->
-          <g class="fw-node" data-href="loops/loop-2.html">
-            <circle class="spin-slow" cx="212" cy="152" r="36" fill="none" stroke="#ddd3f0" stroke-width="1.5" stroke-dasharray="3 6"></circle>
-            <circle class="core" cx="212" cy="152" r="45" fill="#ffffff" stroke="#6d28d9" stroke-width="2"></circle>
-            <text x="212" y="156" text-anchor="middle" class="fw-label">圈 2</text>
-            <text x="212" y="212" text-anchor="middle" class="fw-sub">听懂反馈</text>
-            <text x="212" y="226" text-anchor="middle" class="fw-sub">人 50 · Agent 50</text>
-          </g>
-          <!-- 圈 3 -->
-          <g class="fw-node" data-href="loops/loop-3.html">
-            <circle class="spin-slow" cx="336" cy="92" r="41" fill="none" stroke="#c4dcd8" stroke-width="1.5" stroke-dasharray="3 6"></circle>
-            <circle class="core" cx="336" cy="92" r="50" fill="#ffffff" stroke="#0f766e" stroke-width="2"></circle>
-            <text x="336" y="96" text-anchor="middle" class="fw-label">圈 3</text>
-            <text x="336" y="156" text-anchor="middle" class="fw-sub">接近自治</text>
-            <text x="336" y="170" text-anchor="middle" class="fw-sub">人 5 · Agent 95</text>
-          </g>
-        </svg>
+  <header class="hero">
+    <div class="wrap">
+      <div class="kicker">入职前作业 · AGENT 工程</div>
+      <h1>从一段会议纪要到自进化飞轮<br>—— 合同审核 Agent 的三圈迭代</h1>
+      <p class="oneline">别人交规划，<strong>我交的是规划的第一步已经在跑的样子</strong>：同一套合同审核系统迭代三圈，人机分工从「人 70% / Agent 30%」走到「Agent 95% / 人仅确认」。</p>
+      <div class="meta">
+        <span>作者：于林海 · 15767206657</span>
+        <span>源码：<a href="https://github.com/scutylh/contract-flywheel" target="_blank" rel="noopener">github.com/scutylh/contract-flywheel</a></span>
+        <span>2026-08</span>
       </div>
-      <div class="flywheel-side">
-        <h3>主角不是功能，是持续改进的结构</h3>
-        <p>飞轮不是转一圈就停：每一圈的沉淀物——Skill、组件、约束、评估用例——直接成为下一圈的起点资产，所以三圈做同一套系统，人重复做的事越来越少、自治边界一圈比一圈大。持续改进不是口号，是这个回路的结构。</p>
-        <a class="ratio-row" href="loops/loop-1.html">
-          <span class="ratio-name">圈 1 · 从 0 到可用</span>
-          <div class="ratio-bar"><div class="h" style="width:70%"></div><div class="a" style="width:30%"></div></div>
-          <span class="ratio-num">人 70 / AI 30</span>
-        </a>
-        <a class="ratio-row" href="loops/loop-2.html">
-          <span class="ratio-name">圈 2 · 听懂反馈</span>
-          <div class="ratio-bar"><div class="h" style="width:50%"></div><div class="a" style="width:50%"></div></div>
-          <span class="ratio-num">人 50 / AI 50</span>
-        </a>
-        <a class="ratio-row" href="loops/loop-3.html">
-          <span class="ratio-name">圈 3 · 接近自治</span>
-          <div class="ratio-bar"><div class="h" style="width:5%"></div><div class="a" style="width:95%"></div></div>
-          <span class="ratio-num">人 5 / AI 95</span>
-        </a>
-        <div class="legend">
-          <span><i style="background:#d9a05b"></i>人工完成</span>
-          <span><i style="background:#6d28d9"></i>Agent 完成</span>
+    </div>
+  </header>
+
+  <section class="flywheel-sec">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="no">飞轮总览</div>
+        <h2>同一个系统，三圈迭代，人逐步退出执行层</h2>
+        <p>每一圈的输入都来自上一圈的真实使用反馈；每一圈的产出——Skill、组件、约束、能力边界——都沉淀为下一圈的资产。点击任意一圈进入该圈的完整回放。</p>
+      </div>
+      <div class="flywheel-card">
+        <div class="flywheel-svg">
+          <svg viewBox="0 0 420 320" role="img" aria-label="三圈飞轮持续改进示意图">
+            <defs>
+              <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M 0 1 L 9 5 L 0 9 z" fill="#2563eb"></path>
+              </marker>
+              <marker id="arrow-light" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M 0 1 L 9 5 L 0 9 z" fill="#b7c6de"></path>
+              </marker>
+            </defs>
+            <path d="M 32 282 L 388 58" fill="none" stroke="#c7d4ea" stroke-width="1.5" stroke-dasharray="4 6" marker-end="url(#arrow-light)"></path>
+            <path d="M 126 190 Q 148 180 170 174" fill="none" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arrow)"></path>
+            <path d="M 250 130 Q 270 120 289 115" fill="none" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arrow)"></path>
+            <text x="148" y="160" text-anchor="middle" class="fw-flow">沉淀：模板 · Skill · 边界</text>
+            <text x="269" y="102" text-anchor="middle" class="fw-flow">沉淀：澄清 Skill · notify 组件</text>
+            <path d="M 386 105 C 430 160 420 250 330 280 C 250 305 120 300 52 250" fill="none" stroke="#b7c6de" stroke-width="1.5" stroke-dasharray="5 5" marker-end="url(#arrow-light)"></path>
+            <text x="235" y="309" text-anchor="middle" class="fw-flow">资产回流 · 下一圈起点更高</text>
+            <g class="fw-node" data-href="loops/loop-1.html">
+              <circle class="spin-slow" cx="88" cy="218" r="31" fill="none" stroke="#e3d5c2" stroke-width="1.5" stroke-dasharray="3 6"></circle>
+              <circle class="core" cx="88" cy="218" r="40" fill="#ffffff" stroke="#b45309" stroke-width="2"></circle>
+              <text x="88" y="222" text-anchor="middle" class="fw-label">圈 1</text>
+              <text x="88" y="272" text-anchor="middle" class="fw-sub">从 0 到可用</text>
+              <text x="88" y="286" text-anchor="middle" class="fw-sub">人 70 · Agent 30</text>
+            </g>
+            <g class="fw-node" data-href="loops/loop-2.html">
+              <circle class="spin-slow" cx="212" cy="152" r="36" fill="none" stroke="#ddd3f0" stroke-width="1.5" stroke-dasharray="3 6"></circle>
+              <circle class="core" cx="212" cy="152" r="45" fill="#ffffff" stroke="#6d28d9" stroke-width="2"></circle>
+              <text x="212" y="156" text-anchor="middle" class="fw-label">圈 2</text>
+              <text x="212" y="212" text-anchor="middle" class="fw-sub">听懂反馈</text>
+              <text x="212" y="226" text-anchor="middle" class="fw-sub">人 50 · Agent 50</text>
+            </g>
+            <g class="fw-node" data-href="loops/loop-3.html">
+              <circle class="spin-slow" cx="336" cy="92" r="41" fill="none" stroke="#c4dcd8" stroke-width="1.5" stroke-dasharray="3 6"></circle>
+              <circle class="core" cx="336" cy="92" r="50" fill="#ffffff" stroke="#0f766e" stroke-width="2"></circle>
+              <text x="336" y="96" text-anchor="middle" class="fw-label">圈 3</text>
+              <text x="336" y="156" text-anchor="middle" class="fw-sub">接近自治</text>
+              <text x="336" y="170" text-anchor="middle" class="fw-sub">人 5 · Agent 95</text>
+            </g>
+          </svg>
         </div>
-        <details class="vision-fold">
-          <summary>背后的 3-5 年愿景（折叠，非本页主体）</summary>
-          <p>Agent = 代码 + 提示词，二者皆可由 AI 构建，因此 Agent 亦可由 AI 构建。短期（0-1 年）打通需求到开发的 AI 闭环；中期（1-3 年）常规流程自主交付、标准化 MR 由 AI 审核；长期（3-5 年）全链路自治。本页演示的是短期目标的第一个切片。完整文档见仓库 <a href="https://github.com/scutylh/contract-flywheel/blob/main/docs/vision.md" target="_blank" rel="noopener">docs/vision.md</a>。</p>
-        </details>
+        <div class="flywheel-side">
+          <h3>主角不是功能，是持续改进的结构</h3>
+          <p>飞轮不是转一圈就停：每一圈的沉淀物——Skill、组件、约束、评估用例——直接成为下一圈的起点资产，所以三圈做同一套系统，人重复做的事越来越少、自治边界一圈比一圈大。持续改进不是口号，是这个回路的结构。</p>
+          <a class="ratio-row" href="loops/loop-1.html">
+            <span class="ratio-name">圈 1 · 从 0 到可用</span>
+            <div class="ratio-bar"><div class="h" style="width:70%"></div><div class="a" style="width:30%"></div></div>
+            <span class="ratio-num">人 70 / AI 30</span>
+          </a>
+          <a class="ratio-row" href="loops/loop-2.html">
+            <span class="ratio-name">圈 2 · 听懂反馈</span>
+            <div class="ratio-bar"><div class="h" style="width:50%"></div><div class="a" style="width:50%"></div></div>
+            <span class="ratio-num">人 50 / AI 50</span>
+          </a>
+          <a class="ratio-row" href="loops/loop-3.html">
+            <span class="ratio-name">圈 3 · 接近自治</span>
+            <div class="ratio-bar"><div class="h" style="width:5%"></div><div class="a" style="width:95%"></div></div>
+            <span class="ratio-num">人 5 / AI 95</span>
+          </a>
+          <div class="legend">
+            <span><i style="background:#d9a05b"></i>人工完成</span>
+            <span><i style="background:#6d28d9"></i>Agent 完成</span>
+          </div>
+        </div>
       </div>
+      <div class="flip-hint">向右翻页进入 <b>圈 1</b> · 也可点击上方飞轮节点直达任意一圈 · 键盘 <b>← / →</b> 翻页</div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ============ 屏 3 · 工程设计 ============ -->
-<section id="engineering" class="page" data-page="engineering">
-  <div class="wrap">
-    <div class="sec-head">
-      <div class="no">02 · 工程设计</div>
-      <h2>让比例变化可信的三块地基</h2>
-      <p>飞轮能转起来，靠的不是模型能力突进，而是权限、回放评估、资产沉淀三套机制让每一步都可控、可复盘、可复用。</p>
-    </div>
+</main>
 
-    <div class="tbl-block">
-      <h3>权限模型：动作 × 风险 × 审批人</h3>
-      <div class="desc">原则是「不可逆性越高，人越靠后但永不缺席」——写代码可以自治，改规则永远人工。</div>
-      <table>
-        <thead>
-          <tr><th>动作</th><th>风险级</th><th>圈 1</th><th>圈 2</th><th>圈 3</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>需求结构化 / 澄清</td><td>低</td>
-            <td><span class="pill auto">Agent 自主</span></td>
-            <td><span class="pill auto">Agent 自主</span></td>
-            <td><span class="pill auto">Agent 自主</span></td>
-          </tr>
-          <tr>
-            <td>代码提交 MR</td><td>中</td>
-            <td><span class="pill assist">Agent 提交 · 人审</span></td>
-            <td><span class="pill assist">Agent 提交 · 人审</span></td>
-            <td><span class="pill auto">Agent 提交 · Agent 评审</span></td>
-          </tr>
-          <tr>
-            <td>合并上线</td><td>高</td>
-            <td><span class="pill humanonly">人工批准</span></td>
-            <td><span class="pill humanonly">人工批准</span></td>
-            <td><span class="pill humanonly">人工一键确认</span></td>
-          </tr>
-          <tr>
-            <td>对外通知发送</td><td>高</td>
-            <td>—（未开放）</td>
-            <td><span class="pill assist">模板人审后发送</span></td>
-            <td><span class="pill assist">已审模板自动发送</span></td>
-          </tr>
-          <tr>
-            <td>权限规则变更</td><td>极高</td>
-            <td><span class="pill humanonly">仅人工</span></td>
-            <td><span class="pill humanonly">仅人工</span></td>
-            <td><span class="pill humanonly">仅人工</span></td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="tbl-block">
-      <h3>能力边界表：自治权是挣出来的</h3>
-      <div class="desc">每一圈结束更新一次：任务类型、当前自治级别、历史成功率、进入下一级的准入条件。这是「Agent 能自主解决的边界」的显式记录。</div>
-      <table>
-        <thead>
-          <tr><th>任务类型</th><th>自治级别</th><th>历史表现</th><th>升级准入条件</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>字段提取（金额/账期/付款条件）</td>
-            <td><span class="pill assist">辅助级 · 人审</span></td>
-            <td>回归准确率 96%</td>
-            <td>连续 200 份零人工返工 → 可申请自治级</td>
-          </tr>
-          <tr>
-            <td>定时提醒与角色路由</td>
-            <td><span class="pill assist">辅助级 · 人审</span></td>
-            <td>上线首周 23 条零误报</td>
-            <td>模板库全部人审完成 → 发送动作免审</td>
-          </tr>
-          <tr>
-            <td>关键词提取 + 通知路由扩展</td>
-            <td><span class="pill auto">自治级 · 人仅确认</span></td>
-            <td>自治交付成功率 1/1</td>
-            <td>已满足：复用已验证组件 且 改动 &lt;150 行 且 回归全绿</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="tbl-block">
-      <h3>回放与评估：每一步都可复盘</h3>
-      <div class="desc">全部执行过程落 trace（步骤、输入输出、人工确认节点），支撑三件事：</div>
-      <table>
-        <tbody>
-          <tr><th style="width:180px">Case 级回归</th><td>每次提示词/组件变更，重跑历史评估集（本演示已积累 50 份合同回归集 + 13 条用例），绿了才允许合并。</td></tr>
-          <tr><th>失败案例沉淀</th><td>人工审核打回的每一处修改（如圈 1 的金额大小写冲突）转为评估用例，进入 Skill 的约束条件。</td></tr>
-          <tr><th>灰度与回滚</th><td>提示词版本化管理，新版本先跑回放再上线；线上异常按 trace 定位到具体步骤，一键回滚到上一版本。</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
-
-<!-- ============ 屏 4 · 入职 90 天 ============ -->
-<section id="plan90" class="page page--center" data-page="plan90">
-  <div class="wrap">
-    <div class="sec-head">
-      <div class="no">03 · 入职 90 天</div>
-      <h2>把本演示的三圈，换成真实中台的三圈</h2>
-      <p>贴着现有中台（HR / 薪资 / 报销，已有真实用户）推进，合同审核可作为第四个切片接入。</p>
-    </div>
-    <div class="plan-grid">
-      <div class="plan-card">
-        <div class="d">DAY 1–30</div>
-        <h3>摸清家底，立最小基建</h3>
-        <ul>
-          <li>梳理现有中台架构、数据接口与高频业务动作清单</li>
-          <li>落地 trace 记录与回放的最小基建（本演示的 harness 即雏形）</li>
-          <li>选一个报销/合同高频场景，跑通「会议纪要 → 需求单 → Issue」</li>
-        </ul>
-      </div>
-      <div class="plan-card">
-        <div class="d">DAY 31–60</div>
-        <h3>跑通真实版圈 1–2</h3>
-        <ul>
-          <li>Agent 基于 Issue 完成工作流开发，全部 MR 人工审核后上线</li>
-          <li>建立权限模型 v1 与澄清式交互规范，接入真实组织角色数据</li>
-          <li>沉淀第一批 Skill、组件与评估用例，能力边界表开始记录</li>
-        </ul>
-      </div>
-      <div class="plan-card">
-        <div class="d">DAY 61–90</div>
-        <h3>开放第一个自治任务类型</h3>
-        <ul>
-          <li>1–2 个低风险任务类型进入「Agent 开发 + Agent 评审 + 人工确认」自治交付</li>
-          <li>回归测试体系 v1：Case 级自动验证 + 提示词版本管理</li>
-          <li>输出自治交付成功率与边界数据的第一个月报</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ 屏 5 · 附录 ============ -->
-<section id="appendix" class="page" data-page="appendix">
-  <div class="wrap">
-    <div class="sec-head">
-      <div class="no">04 · 附录</div>
-      <h2>这份作业本身就是一次 harness 实践</h2>
-    </div>
-    <div class="appendix-block">
-      <h3>本作业的开发方式</h3>
-      <ul>
-        <li><strong>设计目标（人）</strong>：确定三圈叙事、场景选题与页面结构，即本文档的 PLAN。</li>
-        <li><strong>执行（Agent）</strong>：页面代码、轨迹数据组织与素材初稿由 Agent 生成。</li>
-        <li><strong>审查接管（人）</strong>：所有业务语义、数字与结论由我本人逐条审校后确认。</li>
-      </ul>
-      <p class="note">诚实声明：本页三圈演示中的业务数据为模拟数据；执行轨迹由自研 mini-harness 组织，LLM 调用以录制 fixture 回放呈现，关键内容完整、次要部分以省略号略去。选择回放而非实时调用，是为了让评审任何时刻打开都看到一致、可复盘的过程——「可回放」本身就是工程目标之一。</p>
-    </div>
-    <div class="appendix-block">
-      <h3>源码与文档</h3>
-      <ul>
-        <li>仓库：<a href="https://github.com/scutylh/contract-flywheel" target="_blank" rel="noopener">github.com/scutylh/contract-flywheel</a></li>
-        <li>愿景原文：<a href="https://github.com/scutylh/contract-flywheel/blob/main/docs/vision.md" target="_blank" rel="noopener">docs/vision.md</a></li>
-        <li>作业计划：<a href="https://github.com/scutylh/contract-flywheel/blob/main/docs/PLAN-v0.1.md" target="_blank" rel="noopener">docs/PLAN-v0.1.md</a></li>
-        <li>三圈轨迹数据：<a href="https://github.com/scutylh/contract-flywheel/tree/main/traces" target="_blank" rel="noopener">traces/</a>（fixture，后续由 harness 真实跑出）</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <div class="wrap">
-    于林海 · 15767206657 · contract-flywheel —— 规划的第一步已经在跑
-  </div>
-</footer>
+<div class="chapter-progress" data-progress></div>
+<div class="chapter-arrows" data-arrows></div>
 
 <script src="js/main.js"></script>
 </body>

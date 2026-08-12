@@ -3,6 +3,12 @@
   "name": "圈 3 · 接近自治",
   "subtitle": "新需求 → Agent 检索历史资产自主开发 → Agent 评审 → 人工一键确认",
   "ratio": { "human": 5, "agent": 95 },
+  "division": [
+    { "action": "需求结构化", "human": "确认", "agent": "检索资产 + 结构化", "humanPct": 10, "agentPct": 90 },
+    { "action": "编码", "human": "—（不参与）", "agent": "全程生成", "humanPct": 0, "agentPct": 100 },
+    { "action": "测试验证", "human": "看回归报告", "agent": "Agent 评审 + 全量回归", "humanPct": 5, "agentPct": 95 },
+    { "action": "上线", "human": "一键确认", "agent": "自动部署 + 通知", "humanPct": 5, "agentPct": 95 }
+  ],
   "traits": ["资产检索：站在前两圈之上", "自主开发：全程零人工编码", "Agent 评审 Agent：人只确认"],
   "trigger": {
     "label": "输入 · 新需求（法务提出，表述已接近结构化）",

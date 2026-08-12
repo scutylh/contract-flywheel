@@ -8,6 +8,36 @@ window.TRACES = [
       "human": 70,
       "agent": 30
     },
+    "division": [
+      {
+        "action": "需求结构化",
+        "human": "从纪要提炼需求",
+        "agent": "五段式需求单",
+        "humanPct": 70,
+        "agentPct": 30
+      },
+      {
+        "action": "编码",
+        "human": "写关键逻辑 + 改 diff",
+        "agent": "生成代码框架",
+        "humanPct": 60,
+        "agentPct": 40
+      },
+      {
+        "action": "测试验证",
+        "human": "逐条复核",
+        "agent": "回归集自动跑",
+        "humanPct": 50,
+        "agentPct": 50
+      },
+      {
+        "action": "上线",
+        "human": "批准合并",
+        "agent": "自动部署",
+        "humanPct": 100,
+        "agentPct": 0
+      }
+    ],
     "traits": [
       "需求结构化：五段式需求单",
       "人机共写：diff 逐行可溯",
@@ -71,6 +101,36 @@ window.TRACES = [
       "human": 50,
       "agent": 50
     },
+    "division": [
+      {
+        "action": "需求结构化",
+        "human": "确认边界",
+        "agent": "反问澄清 + 结构化",
+        "humanPct": 40,
+        "agentPct": 60
+      },
+      {
+        "action": "编码",
+        "human": "改汇总提醒逻辑",
+        "agent": "生成代码",
+        "humanPct": 50,
+        "agentPct": 50
+      },
+      {
+        "action": "测试验证",
+        "human": "审提醒模板",
+        "agent": "回归 + 澄清用例",
+        "humanPct": 30,
+        "agentPct": 70
+      },
+      {
+        "action": "上线",
+        "human": "批准",
+        "agent": "定时扫描发送",
+        "humanPct": 80,
+        "agentPct": 20
+      }
+    ],
     "traits": [
       "反问澄清：先问清楚再动手",
       "边界收窄：本期只发法务",
@@ -140,6 +200,36 @@ window.TRACES = [
       "human": 5,
       "agent": 95
     },
+    "division": [
+      {
+        "action": "需求结构化",
+        "human": "确认",
+        "agent": "检索资产 + 结构化",
+        "humanPct": 10,
+        "agentPct": 90
+      },
+      {
+        "action": "编码",
+        "human": "—（不参与）",
+        "agent": "全程生成",
+        "humanPct": 0,
+        "agentPct": 100
+      },
+      {
+        "action": "测试验证",
+        "human": "看回归报告",
+        "agent": "Agent 评审 + 全量回归",
+        "humanPct": 5,
+        "agentPct": 95
+      },
+      {
+        "action": "上线",
+        "human": "一键确认",
+        "agent": "自动部署 + 通知",
+        "humanPct": 5,
+        "agentPct": 95
+      }
+    ],
     "traits": [
       "资产检索：站在前两圈之上",
       "自主开发：全程零人工编码",

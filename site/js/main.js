@@ -1,43 +1,32 @@
-/* contract-flywheel — 三圈飞轮回放与渲染 */
+/* contract-flywheel — 6 章横向翻页叙事 + 分工矩阵 + 回放横轴 */
 (function () {
   "use strict";
 
+  var CHAPTERS = [
+    { file: "index.html",        label: "首页" },
+    { file: "loops/loop-1.html", label: "圈 1" },
+    { file: "loops/loop-2.html", label: "圈 2" },
+    { file: "loops/loop-3.html", label: "圈 3" },
+    { file: "plan90.html",       label: "90 天" },
+    { file: "appendix.html",     label: "附录" }
+  ];
+
   var ACTOR_LABEL = {
-    agent: "Agent",
-    human: "人工",
-    mixed: "人机协作",
-    reviewer: "评审组 Agent",
-    system: "系统"
-  };
-  var ACTOR_COLOR = {
-    agent: "#6d28d9",
-    human: "#b45309",
-    mixed: "MIX",
-    reviewer: "#0f766e",
-    system: "#64748b"
+    agent: "Agent", human: "人工", mixed: "人机协作",
+    reviewer: "评审组 Agent", system: "系统"
   };
   var KIND_LABEL = {
-    extract: "需求提取",
-    issue: "生成 Issue",
-    clarify: "反问澄清",
-    confirm: "边界确认",
-    input: "需求输入",
-    retrieve: "资产检索",
-    code: "代码开发",
-    review: "审查",
-    approve: "人工审核",
-    deploy: "上线"
+    extract: "需求提取", issue: "生成 Issue", clarify: "反问澄清",
+    confirm: "边界确认", input: "需求输入", retrieve: "资产检索",
+    code: "代码开发", review: "审查", approve: "人工审核", deploy: "上线"
   };
 
   function esc(s) {
     return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   }
-
-  /* 「圈 1 · 从 0 到可用」→「从 0 到可用」 */
   function shortName(loop) {
     return String(loop.name || "").replace(/^圈\s*\d+\s*·\s*/, "");
   }
-
   function findLoop(id) {
     if (!window.TRACES) return null;
     for (var i = 0; i < window.TRACES.length; i++) {
@@ -46,13 +35,6 @@
     return null;
   }
 
-  function maxLoopId() {
-    var m = 0;
-    if (window.TRACES) window.TRACES.forEach(function (l) { m = Math.max(m, l.id); });
-    return m;
-  }
-
-  /* diff 着色：+ Agent 新增 / ± 人工修改 / - 删除 / 其余常规 */
   function renderDiff(text) {
     return text.split("\n").map(function (line) {
       var cls = "dl-dim";
@@ -63,228 +45,252 @@
     }).join("\n");
   }
 
-  function stepHtml(step) {
-    var body = step.lang === "diff"
-      ? '<div class="step-body diff"><pre>' + renderDiff(step.body) + "</pre></div>"
-      : '<div class="step-body"><pre>' + esc(step.body) + "</pre></div>";
-    return (
-      '<li class="step actor-' + step.actor + '">' +
-        '<div class="step-head">' +
-          '<span class="badge ' + step.actor + '">' + ACTOR_LABEL[step.actor] + "</span>" +
-          '<span class="step-title">' + esc(step.title) + "</span>" +
-          '<span class="kind-tag">' + (KIND_LABEL[step.kind] || step.kind) + "</span>" +
-        "</div>" +
-        body +
-      "</li>"
-    );
+  /* ================= 章节壳 ================= */
+  function basePrefix() {
+    var b = document.body.getAttribute("data-base") || "";
+    return b ? b.replace(/\/+$/, "") + "/" : "";
+  }
+  function currentChapter() {
+    var n = parseInt(document.body.getAttribute("data-chapter") || "1", 10);
+    return Math.max(1, Math.min(CHAPTERS.length, n));
+  }
+  function chapterUrl(i) {
+    return basePrefix() + CHAPTERS[i - 1].file;
+  }
+  function go(next) {
+    if (next < 1 || next > CHAPTERS.length) return;
+    try { sessionStorage.setItem("cfw-dir", next > currentChapter() ? "next" : "prev"); } catch (e) {}
+    window.location.href = chapterUrl(next);
   }
 
-  /* 环形图：每个步骤一段弧，回放时逐段点亮 */
-  function arcPath(cx, cy, r, a0, a1) {
-    var x0 = cx + r * Math.cos(a0), y0 = cy + r * Math.sin(a0);
-    var x1 = cx + r * Math.cos(a1), y1 = cy + r * Math.sin(a1);
-    var large = a1 - a0 > Math.PI ? 1 : 0;
-    return "M " + x0.toFixed(1) + " " + y0.toFixed(1) +
-           " A " + r + " " + r + " 0 " + large + " 1 " +
-           x1.toFixed(1) + " " + y1.toFixed(1);
-  }
+  function initChapterShell() {
+    var ch = currentChapter();
+    var base = basePrefix();
 
-  function ringHtml(loop) {
-    var n = loop.steps.length;
-    var cx = 100, cy = 100, r = 78;
-    var gap = 0.12; // 弧度间隙
-    var out = ['<svg viewBox="0 0 200 200" class="ring" role="img" aria-label="圈 ' + loop.id + ' 步骤环">'];
-    out.push('<defs><linearGradient id="gmix-' + loop.id + '" x1="0" y1="0" x2="1" y2="1">' +
-             '<stop offset="0" stop-color="#b45309"/><stop offset="1" stop-color="#6d28d9"/>' +
-             "</linearGradient></defs>");
-    out.push('<circle cx="100" cy="100" r="78" fill="none" stroke="#eef1f6" stroke-width="13"/>');
-    for (var i = 0; i < n; i++) {
-      var a0 = -Math.PI / 2 + (i * 2 * Math.PI) / n + gap / 2;
-      var a1 = -Math.PI / 2 + ((i + 1) * 2 * Math.PI) / n - gap / 2;
-      out.push('<path class="seg" data-seg="' + i + '" d="' + arcPath(cx, cy, r, a0, a1) +
-               '" fill="none" stroke="#dde3ec" stroke-width="13" stroke-linecap="butt"/>');
-    }
-    out.push('<text x="100" y="96" text-anchor="middle" class="ring-loop">圈 ' + loop.id + "</text>");
-    out.push('<text x="100" y="116" text-anchor="middle" class="ring-ratio">人 ' + loop.ratio.human +
-             " · Agent " + loop.ratio.agent + "</text>");
-    out.push("</svg>");
-    return out.join("");
-  }
-
-  function heroHtml(loop) {
-    return (
+    var topbar = document.querySelector("[data-topbar]");
+    if (topbar) topbar.innerHTML =
       '<div class="wrap">' +
-        '<a class="back" href="../index.html">← 返回飞轮总览</a>' +
-        '<span class="loop-tag l' + loop.id + '">圈 ' + loop.id + ' · 执行回放</span>' +
-        '<h1>' + esc(shortName(loop)) + '</h1>' +
-        '<p class="sub">' + esc(loop.subtitle) + '</p>' +
-        '<div class="hero-ratio">' +
-          '<span class="h">人工 ' + loop.ratio.human + '%</span>' +
-          '<span class="a">Agent ' + loop.ratio.agent + '%</span>' +
-        '</div>' +
-      '</div>'
-    );
+        '<a class="brand" href="' + base + 'index.html">contract-flywheel</a>' +
+        '<span class="pos">第 <b>' + ch + '</b> 章 / 共 ' + CHAPTERS.length + ' 章</span>' +
+      '</div>';
+
+    var progress = document.querySelector("[data-progress]");
+    if (progress) {
+      progress.innerHTML = '<div class="wrap">' + CHAPTERS.map(function (c, i) {
+        return '<a href="' + chapterUrl(i + 1) + '"' + (i + 1 === ch ? ' class="on"' : '') +
+          '><span class="bar"></span>' + c.label + '</a>';
+      }).join("") + '</div>';
+    }
+
+    var arrows = document.querySelector("[data-arrows]");
+    if (arrows) {
+      var prevHref = ch > 1 ? chapterUrl(ch - 1) : "#";
+      var nextHref = ch < CHAPTERS.length ? chapterUrl(ch + 1) : "#";
+      arrows.innerHTML =
+        '<a class="prev' + (ch <= 1 ? ' hide' : '') + '" href="' + prevHref + '">' +
+          '<span class="ch">‹</span>查看上一章节</a>' +
+        '<a class="next' + (ch >= CHAPTERS.length ? ' hide' : '') + '" href="' + nextHref + '">' +
+          '查看下一章节<span class="ch">›</span></a>';
+    }
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowRight") { e.preventDefault(); go(ch + 1); }
+      else if (e.key === "ArrowLeft") { e.preventDefault(); go(ch - 1); }
+    });
+
+    // 进入方向 → 滑入动画
+    var dir = null;
+    try { dir = sessionStorage.getItem("cfw-dir"); } catch (e) {}
+    if (dir === "next") document.body.classList.add("enter-next");
+    else if (dir === "prev") document.body.classList.add("enter-prev");
   }
 
-  function vizHtml(loop) {
-    var traits = (loop.traits || []).map(function (t) { return '<li>' + esc(t) + '</li>'; }).join("");
-    return (
-      ringHtml(loop) +
-      '<div class="viz-ratio"><div class="ratio-bar">' +
-        '<div class="h" style="width:' + loop.ratio.human + '%"></div>' +
-        '<div class="a" style="width:' + loop.ratio.agent + '%"></div>' +
+  /* ================= 分工矩阵 ================= */
+  function divisionMatrixHtml(loop) {
+    var div = loop.division || [];
+    var cols = div.length || 1;
+    var grid = "grid-template-columns:" + (112) + "px repeat(" + cols + ",1fr)";
+
+    var head = '<div class="dm-corner">分工</div>' + div.map(function (d) {
+      return '<div class="dm-h">' + esc(d.action) + '</div>';
+    }).join("");
+
+    function lane(kind) {
+      var cells = div.map(function (d) {
+        var pct = kind === "human" ? d.humanPct : d.agentPct;
+        var label = kind === "human" ? d.human : d.agent;
+        var empty = pct <= 0;
+        return '<div class="dm-cell' + (empty ? ' empty' : '') + '">' +
+          '<div class="dm-bar"><div class="dm-fill ' + kind + '" style="width:' + pct + '%"></div></div>' +
+          '<div class="dm-label">' + esc(label) + '</div>' +
+          '<div class="dm-pct">' + pct + '%</div>' +
+        '</div>';
+      }).join("");
+      return '<div class="dm-row" style="' + grid + '">' +
+        '<div class="dm-lane ' + kind + '">' + (kind === "human" ? '人类' : 'Agent') + '</div>' +
+        cells + '</div>';
+    }
+
+    return '<div class="dm">' +
+      '<div class="dm-row" style="' + grid + '">' + head + '</div>' +
+      lane("human") + lane("agent") + '</div>';
+  }
+
+  /* ================= 回放横轴 ================= */
+  function stepBodyHtml(step) {
+    var body = step.lang === "diff" ? renderDiff(step.body) : esc(step.body);
+    return '<div class="step-body"><pre>' + body + '</pre></div>';
+  }
+
+  function replayHtml(loop) {
+    var steps = loop.steps || [];
+    var nodes = steps.map(function (s, i) {
+      return '<button class="ra-node actor-' + s.actor + '" data-i="' + i + '" type="button">' +
+        '<span class="dot"></span><span class="ra-title">' + esc(s.title) + '</span></button>';
+    }).join("");
+    var cards = steps.map(function (s, i) {
+      return '<article class="ra-card actor-' + s.actor + '" data-i="' + i + '">' +
+        '<div class="step-head" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px">' +
+          '<span class="badge ' + s.actor + '">' + ACTOR_LABEL[s.actor] + '</span>' +
+          '<span class="step-title">' + esc(s.title) + '</span>' +
+          '<span class="kind-tag">' + (KIND_LABEL[s.kind] || s.kind) + '</span>' +
+        '</div>' + stepBodyHtml(s) + '</article>';
+    }).join("");
+    var sediments = (loop.sediments || []).map(function (s) { return '<li>' + esc(s) + '</li>'; }).join("");
+    return '<div class="trigger"><div class="t-label">' + esc(loop.trigger.label) + '</div><pre>' + esc(loop.trigger.body) + '</pre></div>' +
+      '<div class="ra-scroller"><div class="ra-canvas">' +
+        '<div class="ra-axis">' + nodes + '</div>' +
+        '<div class="ra-track">' + cards + '</div>' +
+      '</div></div>' +
+      '<div class="sediments"><div class="s-title">本圈沉淀（进入下一圈的资产）</div><ul>' + sediments + '</ul></div>';
+  }
+
+  function bindReplay(container) {
+    var nodes = container.querySelectorAll(".ra-node");
+    var cards = container.querySelectorAll(".ra-card");
+    var scroller = container.querySelector(".ra-scroller");
+
+    function focus(i) {
+      [nodes, cards].forEach(function (list) {
+        list.forEach(function (el, j) {
+          el.classList.toggle("on", j === i);
+          el.classList.remove("dim-adj", "dim-far");
+          if (j !== i) el.classList.add(Math.abs(j - i) === 1 ? "dim-adj" : "dim-far");
+        });
+      });
+      var card = cards[i];
+      if (card && scroller && typeof scroller.scrollTo === "function") {
+        var sr = scroller.getBoundingClientRect();
+        var cr = card.getBoundingClientRect();
+        var left = cr.left - sr.left + scroller.scrollLeft;
+        scroller.scrollTo({ left: Math.max(0, left - (scroller.clientWidth - card.offsetWidth) / 2), behavior: "smooth" });
+      }
+    }
+
+    nodes.forEach(function (n, i) { n.addEventListener("click", function () { focus(i); }); });
+    cards.forEach(function (c, i) { c.addEventListener("click", function () { focus(i); }); });
+    if (nodes.length) focus(0);
+  }
+
+  /* ================= 演一遍（recap） ================= */
+  function renderRecap(container) {
+    if (!window.TRACES || window.TRACES.length < 3) return;
+    var idx = 0;
+    container.innerHTML =
+      '<div class="recap-toolbar">' +
+        '<button class="btn" data-play>▶ 演一遍</button>' +
+        '<div class="recap-dots">' + window.TRACES.map(function (_, i) {
+          return '<span class="recap-dot' + (i === 0 ? ' on' : '') + '"></span>';
+        }).join("") + '</div>' +
+        '<span class="recap-stage-label">圈 ' + window.TRACES[0].id + '</span>' +
       '</div>' +
-      '<div class="legend"><span><i style="background:#d9a05b"></i>人工 ' + loop.ratio.human + '%</span>' +
-      '<span><i style="background:#6d28d9"></i>Agent ' + loop.ratio.agent + '%</span></div></div>' +
-      '<ul class="traits">' + traits + '</ul>' +
-      '<a class="product-link" href="../products/loop' + loop.id + '.html">→ 查看本圈交付的产品</a>'
-    );
-  }
+      '<div class="dm" data-dm>' + divisionMatrixHtml(window.TRACES[0]) + '</div>';
 
-  function mainHtml(loop) {
-    var steps = loop.steps.map(stepHtml).join("");
-    var sediments = loop.sediments.map(function (s) { return '<li>' + esc(s) + '</li>'; }).join("");
-    return (
-      '<div class="trigger"><div class="t-label">' + esc(loop.trigger.label) + '</div><pre>' + esc(loop.trigger.body) + '</pre></div>' +
-      '<div class="controls">' +
-        '<button class="btn" data-run>▶ 运行回放</button>' +
-        '<button class="btn ghost" data-all>展开全部</button>' +
-      '</div>' +
-      '<ul class="steps">' + steps + '</ul>' +
-      '<div class="sediments"><div class="s-title">本圈沉淀（进入下一圈的资产）</div><ul>' + sediments + '</ul></div>'
-    );
-  }
-
-  function navHtml(loop) {
-    var links = [];
-    var prev = loop.id > 1 ? loop.id - 1 : null;
-    var next = loop.id < maxLoopId() ? loop.id + 1 : null;
-    if (prev) links.push('<a class="navlink" href="loop-' + prev + '.html">← 圈 ' + prev + '</a>');
-    if (next) links.push('<a class="navlink" href="loop-' + next + '.html">圈 ' + next + ' →</a>');
-    links.push('<a class="navlink" href="../products/loop' + loop.id + '.html">本圈产品</a>');
-    links.push('<a class="navlink" href="../index.html#engineering">工程设计</a>');
-    return links.join("");
-  }
-
-  function pnavHtml(loop) {
-    var prev = findLoop(loop.id - 1);
-    var next = findLoop(loop.id + 1);
-    var left = prev
-      ? '<a href="loop-' + prev.id + '.html">← 上一圈 · ' + esc(shortName(prev)) + '</a>'
-      : '<span></span>';
-    var right = next
-      ? '<a href="loop-' + next.id + '.html">下一圈 · ' + esc(shortName(next)) + ' →</a>'
-      : '<a href="../index.html#engineering">看支撑它的工程设计 →</a>';
-    return left + right;
-  }
-
-  function bindLoop(card, loop) {
-    var steps = card.querySelectorAll(".step");
-    var segs = card.querySelectorAll(".seg");
-    var runBtn = card.querySelector("[data-run]");
-    var allBtn = card.querySelector("[data-all]");
+    var dm = container.querySelector("[data-dm]");
+    var dots = container.querySelectorAll(".recap-dot");
+    var label = container.querySelector(".recap-stage-label");
+    var btn = container.querySelector("[data-play]");
     var timer = null;
 
-    function lightSeg(i) {
-      var color = ACTOR_COLOR[loop.steps[i].actor];
-      segs[i].style.stroke = color === "MIX" ? "url(#gmix-" + loop.id + ")" : color;
-      segs[i].classList.add("lit");
+    function setLoop(i) {
+      var loop = window.TRACES[i];
+      var N = loop.division.length;
+      var fills = dm.querySelectorAll(".dm-fill");
+      var labels = dm.querySelectorAll(".dm-label");
+      var pcts = dm.querySelectorAll(".dm-pct");
+      var cells = dm.querySelectorAll(".dm-cell");
+      loop.division.forEach(function (d, j) {
+        // 人类行（前 N 格）
+        fills[j].style.width = d.humanPct + "%";
+        pcts[j].textContent = d.humanPct + "%";
+        labels[j].textContent = d.human;
+        cells[j].classList.toggle("empty", d.humanPct <= 0);
+        // Agent 行（后 N 格）
+        fills[j + N].style.width = d.agentPct + "%";
+        pcts[j + N].textContent = d.agentPct + "%";
+        labels[j + N].textContent = d.agent;
+        cells[j + N].classList.toggle("empty", d.agentPct <= 0);
+      });
+      dots.forEach(function (d, k) { d.classList.toggle("on", k === i); });
+      label.textContent = "圈 " + loop.id;
+      idx = i;
     }
 
-    function showStep(i) {
-      steps.forEach(function (s) { s.classList.remove("current"); });
-      steps[i].classList.add("shown");
-      steps[i].classList.add("current");
-      lightSeg(i);
-    }
-
-    function reset() {
-      if (timer) { clearInterval(timer); timer = null; }
-      steps.forEach(function (s) { s.classList.remove("shown", "current"); });
-      segs.forEach(function (sg) { sg.classList.remove("lit"); sg.style.stroke = ""; });
-      runBtn.disabled = false;
-      runBtn.textContent = "▶ 运行回放";
-    }
-
-    runBtn.addEventListener("click", function () {
-      reset();
-      runBtn.disabled = true;
-      runBtn.textContent = "回放中…";
-      var i = 0;
+    btn.addEventListener("click", function () {
+      if (timer) return;
+      idx = 0;
+      setLoop(0);
+      btn.textContent = "回放中…";
       timer = setInterval(function () {
-        if (i >= steps.length) {
+        if (idx >= window.TRACES.length - 1) {
           clearInterval(timer); timer = null;
-          runBtn.disabled = false;
-          runBtn.textContent = "↻ 重新回放";
+          btn.textContent = "↻ 重新演一遍";
           return;
         }
-        showStep(i);
-        i++;
-      }, 850);
-    });
-
-    allBtn.addEventListener("click", function () {
-      reset();
-      steps.forEach(function (s, i) { s.classList.add("shown"); lightSeg(i); });
-      runBtn.textContent = "↻ 重新回放";
+        setLoop(idx + 1);
+      }, 1400);
     });
   }
 
-  /* 独立 loop 页：读 body[data-loop]，渲染页头 + 环形图 + 回放主体 + 导航 */
+  /* ================= 圈页渲染 ================= */
   function renderLoopPage() {
-    var id = document.body.getAttribute("data-loop");
-    var loop = findLoop(id);
+    var loop = findLoop(document.body.getAttribute("data-loop"));
     if (!loop) return;
 
-    var hero = document.querySelector("[data-loop-hero]");
-    if (hero) hero.innerHTML = heroHtml(loop);
-    var viz = document.querySelector("[data-loop-viz]");
-    if (viz) viz.innerHTML = vizHtml(loop);
-    var main = document.querySelector("[data-loop-main]");
-    if (main) main.innerHTML = mainHtml(loop);
-    var nav = document.querySelector("[data-loop-nav]");
-    if (nav) nav.innerHTML = navHtml(loop);
-    var pnav = document.querySelector("[data-loop-pnav]");
-    if (pnav) pnav.innerHTML = pnavHtml(loop);
+    var head = document.querySelector("[data-loop-head]");
+    if (head) head.innerHTML =
+      '<a class="back" href="' + basePrefix() + 'index.html">← 返回首页</a>' +
+      '<span class="loop-tag l' + loop.id + '">圈 ' + loop.id + ' · 执行回放</span>' +
+      '<h1>' + esc(shortName(loop)) + '</h1>' +
+      '<p class="sub">' + esc(loop.subtitle) + '</p>' +
+      '<div class="hero-ratio">' +
+        '<span class="h">人工 ' + loop.ratio.human + '%</span>' +
+        '<span class="a">Agent ' + loop.ratio.agent + '%</span>' +
+      '</div>';
 
-    var split = document.querySelector(".loop-split");
-    if (split) bindLoop(split, loop);
+    var div = document.querySelector("[data-division]");
+    if (div) div.innerHTML = divisionMatrixHtml(loop);
+
+    var replay = document.querySelector("[data-replay]");
+    if (replay) { replay.innerHTML = replayHtml(loop); bindReplay(replay); }
+
+    var recap = document.querySelector("[data-recap]");
+    if (recap) renderRecap(recap);
   }
 
-  /* 门户：飞轮节点点击跳转对应圈的独立回放页 */
+  /* ================= 首页飞轮跳转 ================= */
   function bindFlywheel() {
     document.querySelectorAll("[data-href]").forEach(function (el) {
       el.addEventListener("click", function () {
+        try { sessionStorage.setItem("cfw-dir", "next"); } catch (e) {}
         window.location.href = el.getAttribute("data-href");
       });
     });
   }
 
-  /* 右侧页码圆点：随滚动高亮当前页 */
-  function bindDots() {
-    var pages = document.querySelectorAll("[data-page]");
-    var dots = document.querySelectorAll(".pagedots a[data-page]");
-    if (!pages.length || !dots.length) return;
-    var map = {};
-    dots.forEach(function (d) { map[d.getAttribute("data-page")] = d; });
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (e.isIntersecting) {
-          dots.forEach(function (d) { d.classList.remove("on"); });
-          var d = map[e.target.getAttribute("data-page")];
-          if (d) d.classList.add("on");
-        }
-      });
-    }, { rootMargin: "-45% 0px -50% 0px", threshold: 0 });
-    pages.forEach(function (p) { io.observe(p); });
-  }
-
   document.addEventListener("DOMContentLoaded", function () {
-    if (document.body.hasAttribute("data-loop")) {
-      renderLoopPage();
-    } else {
-      bindFlywheel();
-      bindDots();
-    }
+    initChapterShell();
+    if (document.body.hasAttribute("data-loop")) renderLoopPage();
+    else bindFlywheel();
   });
 })();

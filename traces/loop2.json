@@ -3,6 +3,12 @@
   "name": "圈 2 · 听懂反馈",
   "subtitle": "模糊反馈 → Agent 反问澄清 → 边界收窄 → 账期提醒上线",
   "ratio": { "human": 50, "agent": 50 },
+  "division": [
+    { "action": "需求结构化", "human": "确认边界", "agent": "反问澄清 + 结构化", "humanPct": 40, "agentPct": 60 },
+    { "action": "编码", "human": "改汇总提醒逻辑", "agent": "生成代码", "humanPct": 50, "agentPct": 50 },
+    { "action": "测试验证", "human": "审提醒模板", "agent": "回归 + 澄清用例", "humanPct": 30, "agentPct": 70 },
+    { "action": "上线", "human": "批准", "agent": "定时扫描发送", "humanPct": 80, "agentPct": 20 }
+  ],
   "traits": ["反问澄清：先问清楚再动手", "边界收窄：本期只发法务", "组件沉淀：notify 入库"],
   "trigger": {
     "label": "输入 · 负责人反馈（评审会上一句话）",

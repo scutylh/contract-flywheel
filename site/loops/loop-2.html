@@ -3,36 +3,101 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>圈 2 回放 · 听懂反馈 — contract-flywheel</title>
+<title>圈 2 · 听懂反馈 — contract-flywheel</title>
 <link rel="stylesheet" href="../css/style.css">
 </head>
-<body data-loop="2">
+<body data-chapter="3" data-base=".." data-loop="2">
 
-<nav>
-  <div class="wrap">
-    <a class="brand" href="../index.html">contract-flywheel</a>
-    <span class="navlinks" data-loop-nav></span>
-  </div>
-</nav>
+<div class="topbar" data-topbar></div>
 
-<header class="product-hero" data-loop-hero></header>
+<main class="chapter-body">
 
-<section class="loop-body">
-  <div class="wrap">
-    <div class="loop-split">
-      <aside class="loop-viz" data-loop-viz></aside>
-      <div class="loop-main" data-loop-main></div>
+  <header class="loop-head" data-loop-head></header>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="no">01 · 人机分工</div>
+        <h2>这一圈，人和 Agent 各自做什么</h2>
+        <p>把软件开发拆成「需求 → 编码 → 测试 → 上线」四个动作。上栏是人类的工作，下栏是 Agent 的工作；占比条越短，说明这一步越不需要人工介入。</p>
+      </div>
+      <div data-division></div>
     </div>
-  </div>
-</section>
+  </section>
 
-<div class="wrap">
-  <div class="p-nav" data-loop-pnav></div>
-</div>
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="no">02 · 执行回放</div>
+        <h2>一句模糊反馈，Agent 先反问、再动手</h2>
+        <p>点击横轴上的节点，聚焦查看该步骤；相邻步骤会淡出。左右滑动即可浏览全程。</p>
+      </div>
+      <div data-replay></div>
+    </div>
+  </section>
 
-<footer>
-  <div class="wrap">于林海 · 15767206657 · contract-flywheel</div>
-</footer>
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="no">03 · 交付的产品</div>
+        <h2>账期提醒 · 到期前 7 天发对人</h2>
+        <p>来自负责人一句模糊反馈：「提醒要发给对应的人，不同的人负责不同的合同。」Agent 没有直接动手，先反问澄清、收窄边界（本期只发法务复核人），再交付。这个产品的形态本身就是「听懂需求」的证据。</p>
+      </div>
+
+      <div class="mock-frame">
+        <div class="mock-bar">
+          <span class="dot" style="background:#f87171"></span>
+          <span class="dot" style="background:#fbbf24"></span>
+          <span class="dot" style="background:#34d399"></span>
+          <span style="margin-left:8px">中台 · 消息中心（法务复核人视角）</span>
+        </div>
+        <div class="mock-body">
+          <div class="msg-card">
+            <div class="m-head"><span>系统 · 合同账期</span><span>今日 09:00</span></div>
+            <div class="m-title">账期提醒汇总 · 你名下 3 份合同将在 7 天内到期</div>
+            <ul>
+              <li><b>HT-2026-0097</b> · 云启科技 · 账期 8 月 19 日到期（剩 6 天）· 应收 ¥420,000</li>
+              <li><b>HT-2026-0101</b> · 恒润贸易 · 账期 8 月 20 日到期（剩 7 天）· 应收 ¥158,000</li>
+              <li><b>HT-2026-0103</b> · 北辰数据 · 账期 8 月 21 日到期（剩 8 天）· 应收 ¥96,000</li>
+            </ul>
+            <div class="m-foot">同一负责人多份合同合并为一条汇总提醒（圈 2 人工审核改出的规则），避免逐份轰炸。</div>
+          </div>
+          <div class="msg-card legal">
+            <div class="m-head"><span>系统 · 合同账期（兜底提醒）</span><span>今日 09:00 · 发法务组长</span></div>
+            <div class="m-title">1 份到期合同负责人字段缺失，请补录</div>
+            <ul>
+              <li><b>HT-2026-0102</b> · 明州物流 · 账期 8 月 18 日到期 · 流程表「负责人」为空，已按兜底规则提醒你</li>
+            </ul>
+            <div class="m-foot">兜底策略：负责人缺失的合同提醒法务组长并标注待补录——数据问题不静默。</div>
+          </div>
+        </div>
+      </div>
+      <p class="mock-note"><b>界面说明：</b>提醒按流程表「负责人」字段路由，模板经人工审核后才允许发送（权限模型：对外通知属高风险动作）；业务对接人、部门负责人的分发规则在澄清环节被刻意排除出本期，另立 Issue #18。</p>
+
+      <div class="stat-grid">
+        <div class="stat-card"><div class="v">0</div><div class="k">上线首周误报（23 条提醒全部命中）</div></div>
+        <div class="stat-card"><div class="v">61% → 94%</div><div class="k">法务确认及时率</div></div>
+        <div class="stat-card"><div class="v">3 问</div><div class="k">澄清次数：角色 / 维度 / 时机，问清才动手</div></div>
+        <div class="stat-card"><div class="v">1 个</div><div class="k">沉淀组件：notify 入组件库（圈 3 直接复用）</div></div>
+      </div>
+
+      <div class="tbl-block">
+        <h3>这一圈真正交付的不只是提醒</h3>
+        <table>
+          <tbody>
+            <tr><th style="width:180px">澄清式交互 Skill</th><td>模糊指派 → 角色枚举 → 边界确认 → 二次复述。这条 Skill 进入资产库，后续所有「发给人」类需求直接复用。</td></tr>
+            <tr><th>评估用例 +2</th><td>澄清路径进入回归集：下次提示词改动，自动验证「遇到模糊需求先反问」这条行为不退化。</td></tr>
+            <tr><th>克制的边界</th><td>业务组分发的需求在澄清中被明确推迟——圈 3 它回来时，正好成为演示自治能力的素材。边界收窄不是拖延，是把需求排进飞轮的合适圈次。</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<div class="chapter-progress" data-progress></div>
+<div class="chapter-arrows" data-arrows></div>
 
 <script src="../js/traces.js"></script>
 <script src="../js/main.js"></script>

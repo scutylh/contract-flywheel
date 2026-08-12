@@ -3,6 +3,12 @@
   "name": "圈 1 · 从 0 到可用",
   "subtitle": "会议纪要 → 需求单 → 人机协作开发 → 双审上线",
   "ratio": { "human": 70, "agent": 30 },
+  "division": [
+    { "action": "需求结构化", "human": "从纪要提炼需求", "agent": "五段式需求单", "humanPct": 70, "agentPct": 30 },
+    { "action": "编码", "human": "写关键逻辑 + 改 diff", "agent": "生成代码框架", "humanPct": 60, "agentPct": 40 },
+    { "action": "测试验证", "human": "逐条复核", "agent": "回归集自动跑", "humanPct": 50, "agentPct": 50 },
+    { "action": "上线", "human": "批准合并", "agent": "自动部署", "humanPct": 100, "agentPct": 0 }
+  ],
   "traits": ["需求结构化：五段式需求单", "人机共写：diff 逐行可溯", "双审闸门：Agent 自审 + 人工批准"],
   "trigger": {
     "label": "输入 · 法务例会纪要（2026-07-28）",
