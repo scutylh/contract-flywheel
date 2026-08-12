@@ -1,0 +1,10 @@
+{
+  "name": "contract-flywheel",
+  "private": true,
+  "version": "0.7.0",
+  "description": "从一段会议纪要到自进化飞轮 —— 合同审核 Agent 的三圈迭代（静态演示站）",
+  "scripts": {
+    "build": "node scripts/build-traces.mjs",
+    "test": "node scripts/verify-site.mjs"
+  }
+}
