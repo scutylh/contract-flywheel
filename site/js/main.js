@@ -30,7 +30,26 @@
   };
 
   function esc(s) {
-    return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  /* 「圈 1 · 从 0 到可用」→「从 0 到可用」 */
+  function shortName(loop) {
+    return String(loop.name || "").replace(/^圈\s*\d+\s*·\s*/, "");
+  }
+
+  function findLoop(id) {
+    if (!window.TRACES) return null;
+    for (var i = 0; i < window.TRACES.length; i++) {
+      if (String(window.TRACES[i].id) === String(id)) return window.TRACES[i];
+    }
+    return null;
+  }
+
+  function maxLoopId() {
+    var m = 0;
+    if (window.TRACES) window.TRACES.forEach(function (l) { m = Math.max(m, l.id); });
+    return m;
   }
 
   /* diff 着色：+ Agent 新增 / ± 人工修改 / - 删除 / 其余常规 */
@@ -60,7 +79,7 @@
     );
   }
 
-  /* 左栏环形图：每个步骤一段弧，回放时逐段点亮 */
+  /* 环形图：每个步骤一段弧，回放时逐段点亮 */
   function arcPath(cx, cy, r, a0, a1) {
     var x0 = cx + r * Math.cos(a0), y0 = cy + r * Math.sin(a0);
     var x1 = cx + r * Math.cos(a1), y1 = cy + r * Math.sin(a1);
@@ -92,40 +111,71 @@
     return out.join("");
   }
 
-  function loopHtml(loop) {
-    var traits = (loop.traits || []).map(function (t) {
-      return '<li>' + esc(t) + "</li>";
-    }).join("");
-    var sediments = loop.sediments.map(function (s) {
-      return "<li>" + esc(s) + "</li>";
-    }).join("");
-    var steps = loop.steps.map(stepHtml).join("");
+  function heroHtml(loop) {
     return (
-      '<div class="loop-card">' +
-        '<div class="loop-split">' +
-          '<aside class="loop-viz">' +
-            ringHtml(loop) +
-            "<h3>" + esc(loop.name) + "</h3>" +
-            '<div class="sub">' + esc(loop.subtitle) + "</div>" +
-            '<div class="viz-ratio"><div class="ratio-bar">' +
-              '<div class="h" style="width:' + loop.ratio.human + '%"></div>' +
-              '<div class="a" style="width:' + loop.ratio.agent + '%"></div>' +
-            "</div></div>" +
-            '<ul class="traits">' + traits + "</ul>" +
-            '<a class="product-link" href="products/loop' + loop.id + '.html">→ 查看本圈交付的产品</a>' +
-          "</aside>" +
-          '<div class="loop-main">' +
-            '<div class="trigger"><div class="t-label">' + esc(loop.trigger.label) + "</div><pre>" + esc(loop.trigger.body) + "</pre></div>" +
-            '<div class="controls">' +
-              '<button class="btn" data-run>▶ 运行回放</button>' +
-              '<button class="btn ghost" data-all>展开全部</button>' +
-            "</div>" +
-            '<ul class="steps">' + steps + "</ul>" +
-            '<div class="sediments"><div class="s-title">本圈沉淀（进入下一圈的资产）</div><ul>' + sediments + "</ul></div>" +
-          "</div>" +
-        "</div>" +
-      "</div>"
+      '<div class="wrap">' +
+        '<a class="back" href="../index.html">← 返回飞轮总览</a>' +
+        '<span class="loop-tag l' + loop.id + '">圈 ' + loop.id + ' · 执行回放</span>' +
+        '<h1>' + esc(shortName(loop)) + '</h1>' +
+        '<p class="sub">' + esc(loop.subtitle) + '</p>' +
+        '<div class="hero-ratio">' +
+          '<span class="h">人工 ' + loop.ratio.human + '%</span>' +
+          '<span class="a">Agent ' + loop.ratio.agent + '%</span>' +
+        '</div>' +
+      '</div>'
     );
+  }
+
+  function vizHtml(loop) {
+    var traits = (loop.traits || []).map(function (t) { return '<li>' + esc(t) + '</li>'; }).join("");
+    return (
+      ringHtml(loop) +
+      '<div class="viz-ratio"><div class="ratio-bar">' +
+        '<div class="h" style="width:' + loop.ratio.human + '%"></div>' +
+        '<div class="a" style="width:' + loop.ratio.agent + '%"></div>' +
+      '</div>' +
+      '<div class="legend"><span><i style="background:#d9a05b"></i>人工 ' + loop.ratio.human + '%</span>' +
+      '<span><i style="background:#6d28d9"></i>Agent ' + loop.ratio.agent + '%</span></div></div>' +
+      '<ul class="traits">' + traits + '</ul>' +
+      '<a class="product-link" href="../products/loop' + loop.id + '.html">→ 查看本圈交付的产品</a>'
+    );
+  }
+
+  function mainHtml(loop) {
+    var steps = loop.steps.map(stepHtml).join("");
+    var sediments = loop.sediments.map(function (s) { return '<li>' + esc(s) + '</li>'; }).join("");
+    return (
+      '<div class="trigger"><div class="t-label">' + esc(loop.trigger.label) + '</div><pre>' + esc(loop.trigger.body) + '</pre></div>' +
+      '<div class="controls">' +
+        '<button class="btn" data-run>▶ 运行回放</button>' +
+        '<button class="btn ghost" data-all>展开全部</button>' +
+      '</div>' +
+      '<ul class="steps">' + steps + '</ul>' +
+      '<div class="sediments"><div class="s-title">本圈沉淀（进入下一圈的资产）</div><ul>' + sediments + '</ul></div>'
+    );
+  }
+
+  function navHtml(loop) {
+    var links = [];
+    var prev = loop.id > 1 ? loop.id - 1 : null;
+    var next = loop.id < maxLoopId() ? loop.id + 1 : null;
+    if (prev) links.push('<a class="navlink" href="loop-' + prev + '.html">← 圈 ' + prev + '</a>');
+    if (next) links.push('<a class="navlink" href="loop-' + next + '.html">圈 ' + next + ' →</a>');
+    links.push('<a class="navlink" href="../products/loop' + loop.id + '.html">本圈产品</a>');
+    links.push('<a class="navlink" href="../index.html#engineering">工程设计</a>');
+    return links.join("");
+  }
+
+  function pnavHtml(loop) {
+    var prev = findLoop(loop.id - 1);
+    var next = findLoop(loop.id + 1);
+    var left = prev
+      ? '<a href="loop-' + prev.id + '.html">← 上一圈 · ' + esc(shortName(prev)) + '</a>'
+      : '<span></span>';
+    var right = next
+      ? '<a href="loop-' + next.id + '.html">下一圈 · ' + esc(shortName(next)) + ' →</a>'
+      : '<a href="../index.html#engineering">看支撑它的工程设计 →</a>';
+    return left + right;
   }
 
   function bindLoop(card, loop) {
@@ -180,22 +230,32 @@
     });
   }
 
-  function renderLoops() {
-    if (!window.TRACES) return;
-    window.TRACES.forEach(function (loop) {
-      var host = document.getElementById("loop-" + loop.id);
-      if (!host) return;
-      host.innerHTML = loopHtml(loop);
-      bindLoop(host, loop);
-    });
+  /* 独立 loop 页：读 body[data-loop]，渲染页头 + 环形图 + 回放主体 + 导航 */
+  function renderLoopPage() {
+    var id = document.body.getAttribute("data-loop");
+    var loop = findLoop(id);
+    if (!loop) return;
+
+    var hero = document.querySelector("[data-loop-hero]");
+    if (hero) hero.innerHTML = heroHtml(loop);
+    var viz = document.querySelector("[data-loop-viz]");
+    if (viz) viz.innerHTML = vizHtml(loop);
+    var main = document.querySelector("[data-loop-main]");
+    if (main) main.innerHTML = mainHtml(loop);
+    var nav = document.querySelector("[data-loop-nav]");
+    if (nav) nav.innerHTML = navHtml(loop);
+    var pnav = document.querySelector("[data-loop-pnav]");
+    if (pnav) pnav.innerHTML = pnavHtml(loop);
+
+    var split = document.querySelector(".loop-split");
+    if (split) bindLoop(split, loop);
   }
 
-  /* 总览：比例条与节点点击跳转 */
+  /* 门户：飞轮节点点击跳转对应圈的独立回放页 */
   function bindFlywheel() {
-    document.querySelectorAll("[data-goto]").forEach(function (el) {
+    document.querySelectorAll("[data-href]").forEach(function (el) {
       el.addEventListener("click", function () {
-        var target = document.getElementById(el.getAttribute("data-goto"));
-        if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+        window.location.href = el.getAttribute("data-href");
       });
     });
   }
@@ -220,8 +280,11 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-    renderLoops();
-    bindFlywheel();
-    bindDots();
+    if (document.body.hasAttribute("data-loop")) {
+      renderLoopPage();
+    } else {
+      bindFlywheel();
+      bindDots();
+    }
   });
 })();

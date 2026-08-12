@@ -258,6 +258,15 @@ tr.row-hit td { background: #fef2f2; }
 footer { padding: 40px 0 56px; text-align: center; color: var(--muted); font-size: 13px; }
 footer a { color: var(--accent); text-decoration: none; }
 
+/* ---------- loop pages ---------- */
+.navlinks { display: inline-flex; align-items: center; gap: 18px; }
+a.ratio-row { text-decoration: none; color: inherit; }
+.loop-body { padding: 8px 0 24px; }
+.hero-ratio { margin-top: 18px; display: flex; gap: 8px; align-items: center; }
+.hero-ratio span { font-size: 13px; font-weight: 700; padding: 4px 12px; border-radius: 20px; }
+.hero-ratio .h { background: #fef3c7; color: var(--human); }
+.hero-ratio .a { background: #ede9fe; color: var(--agent); }
+
 @media (max-width: 720px) {
   .hero h1 { font-size: 30px; }
   .flywheel-svg { flex: 1 1 100%; }

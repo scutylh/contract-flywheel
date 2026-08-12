@@ -19,7 +19,11 @@
 ├── scripts/
 │   └── build-traces.mjs # traces/*.json → site/js/traces.js 打包脚本
 └── site/                # 纯静态演示站（nginx 直发即可）
-    ├── index.html       # 叙事主站：飞轮总览 + 三圈回放 + 工程设计 + 90 天
+    ├── index.html       # 门户：飞轮总览 + 工程设计 + 90 天 + 附录
+    ├── loops/           # 每圈独立回放页（执行轨迹 + 播放 + 沉淀）
+    │   ├── loop-1.html
+    │   ├── loop-2.html
+    │   └── loop-3.html
     └── products/        # 每圈交付的产品页（界面 mock + 验收数据）
 ```
 
@@ -35,7 +39,8 @@ cd site && python -m http.server 8080
 1. 修改/生成轨迹：`traces/loopN.json`
 2. 校验：`python harness/main.py`
 3. 打包进页面：`node scripts/build-traces.mjs`
-4. 部署：`site/` 整个目录 nginx 直发，无常驻后端
+4. 站点自检：`node scripts/verify-site.mjs`（语法 / 轨迹同步 / 链接与锚点可达）
+5. 部署：`site/` 整个目录 nginx 直发，无常驻后端
 
 ## 诚实声明
 

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>会智 · 会议纪要自动交付 Agent</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ============ Nav ============ -->
+<nav class="nav">
+  <div class="container nav-inner">
+    <div class="nav-logo">会智 <span>Meeting-to-Issue Agent</span></div>
+    <div class="nav-links">
+      <a href="#demo">演示</a>
+      <a href="#evolution">自进化</a>
+      <a href="#metrics">评估</a>
+      <a href="#architecture">架构</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ Hero ============ -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-badge">AGENT-NATIVE 交付演示</div>
+    <h1>把会议里的每句话，<br>变成 <span class="highlight">可执行的工作流</span></h1>
+    <p class="hero-tagline">
+      粘贴一份会议纪要，Agent 自动提取议题、决策与待办，生成标准 Issue 和工作流草案，
+      并在人工反馈中越用越准。这是「自进化 Agent 工程」的最小可用切片。
+    </p>
+    <div class="pain-cards">
+      <div class="pain-card">
+        <div class="icon">📋</div>
+        <div class="title">纪要散落在群里</div>
+        <div class="desc">开完会纪要发群聊，3 天后没人记得待办</div>
+      </div>
+      <div class="pain-card">
+        <div class="icon">🔁</div>
+        <div class="title">需求反复确认</div>
+        <div class="desc">口语需求在聊天记录里来回拉扯，两周后才发现理解偏差</div>
+      </div>
+      <div class="pain-card">
+        <div class="icon">❓</div>
+        <div class="title">进展不可追踪</div>
+        <div class="desc">"上次说的那个事到哪了？"——没人能回答</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Demo ============ -->
+<section id="demo" class="section">
+  <div class="container">
+    <h2 class="section-title">实时演示 <span class="accent">→</span></h2>
+    <p class="section-sub">选择一个示例纪要（或粘贴你自己的），点击「运行 Agent」查看完整处理链路。</p>
+
+    <!-- Example Selector -->
+    <div class="example-selector" id="exampleSelector"></div>
+
+    <!-- Input -->
+    <div class="input-panel">
+      <textarea id="inputText" placeholder="在此粘贴会议纪要文本..."></textarea>
+      <button class="run-btn" id="runBtn">运行 Agent →</button>
+    </div>
+
+    <!-- Processing Steps -->
+    <div id="processingArea" class="hidden mt-24">
+      <h3 class="section-title" style="font-size: 1.1rem;">Agent 处理链路</h3>
+      <div class="processing-bar" id="processingBar"></div>
+    </div>
+
+    <!-- Extraction Results -->
+    <div id="extractionArea" class="hidden mt-24">
+      <h3 class="section-title" style="font-size: 1.1rem;">结构化提取结果</h3>
+      <div class="extraction-grid" id="extractionGrid"></div>
+    </div>
+
+    <!-- Issue Cards -->
+    <div id="issuesArea" class="hidden mt-24">
+      <h3 class="section-title" style="font-size: 1.1rem;">自动生成 Issue</h3>
+      <p class="text-sm muted">点击 Issue 卡片查看自动生成的工作流草案与提示词</p>
+      <div class="issue-grid" id="issueGrid"></div>
+    </div>
+
+    <!-- Workflow Detail -->
+    <div id="workflowArea" class="hidden"></div>
+
+    <!-- Review Panel -->
+    <div id="reviewArea" class="hidden">
+      <div class="review-panel">
+        <h3 class="section-title" style="font-size: 1.1rem;">人工审核台</h3>
+        <p class="text-sm muted mb-16">人工确认是闭环的最后一环——通过/驳回的反馈进入自进化池</p>
+        <div class="review-actions">
+          <button class="review-btn approve" id="approveBtn">✓ 通过</button>
+          <button class="review-btn reject" id="rejectBtn">✗ 驳回 / 标注错误</button>
+        </div>
+        <div class="review-status" id="reviewStatus"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Evolution ============ -->
+<section id="evolution" class="section">
+  <div class="container">
+    <h2 class="section-title">自进化 <span class="accent">机制</span></h2>
+    <p class="section-sub">
+      不是口号——每一次人工修正都进入反馈池，按错误类型聚类优化提示词，回归验证后发布新版本。
+    </p>
+
+    <div class="grid-2">
+      <!-- Timeline -->
+      <div>
+        <h4 style="font-size: 0.85rem; color: var(--gold); margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1px;">
+          Prompt 版本演进
+        </h4>
+        <div class="evo-timeline" id="evoTimeline"></div>
+      </div>
+
+      <!-- Chart + Corrections -->
+      <div>
+        <div class="chart-container mb-16">
+          <h4>提取准确率趋势</h4>
+          <p class="chart-sub">基于 120 份标注纪要的回归测试</p>
+          <svg id="accuracyChart" viewBox="0 0 440 200" style="width: 100%;"></svg>
+        </div>
+        <div>
+          <h4 style="font-size: 0.85rem; color: var(--gold); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px;">
+            人工修正记录
+          </h4>
+          <div style="overflow-x: auto;">
+            <table class="correction-table" id="correctionTable"></table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Metrics ============ -->
+<section id="metrics" class="section">
+  <div class="container">
+    <h2 class="section-title">评估 <span class="accent">指标</span></h2>
+    <p class="section-sub">用真实任务结果证明系统有效——评估集、日志、回归验证。</p>
+    <div class="grid-4" id="metricsGrid"></div>
+
+    <div class="mt-32">
+      <h3 class="section-title" style="font-size: 1.1rem;">人机职责拆分</h3>
+      <p class="text-sm muted mb-16">每个环节明确交给模型、工具、规则还是人工</p>
+      <div style="overflow-x: auto;">
+        <table class="split-table" id="splitTable"></table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Architecture ============ -->
+<section id="architecture" class="section">
+  <div class="container">
+    <h2 class="section-title">技术架构 <span class="accent">& 设计</span></h2>
+    <p class="section-sub">这不是概念图——每个模块都有对应的代码和评估方法。</p>
+    <div class="arch-grid" id="archGrid"></div>
+  </div>
+</section>
+
+<!-- ============ Footer ============ -->
+<footer class="footer">
+  <div class="container">
+    <p><span class="gold">会智</span> · Meeting-to-Issue Agent | 会议纪要自动交付演示</p>
+    <p>Agent-native 开发 · 上下文工程 · 评估驱动迭代</p>
+  </div>
+</footer>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
