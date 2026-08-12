@@ -112,6 +112,7 @@
               '<div class="a" style="width:' + loop.ratio.agent + '%"></div>' +
             "</div></div>" +
             '<ul class="traits">' + traits + "</ul>" +
+            '<a class="product-link" href="products/loop' + loop.id + '.html">→ 查看本圈交付的产品</a>' +
           "</aside>" +
           '<div class="loop-main">' +
             '<div class="trigger"><div class="t-label">' + esc(loop.trigger.label) + "</div><pre>" + esc(loop.trigger.body) + "</pre></div>" +

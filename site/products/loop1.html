@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>圈 1 交付 · 合同流程表 v1 关键信息提取 — contract-flywheel</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="brand" href="../index.html">contract-flywheel</a>
+    <a class="navlink" href="../index.html#loop-1">← 主站·圈 1 回放</a>
+    <a class="navlink" href="loop2.html">圈 2 产品</a>
+    <a class="navlink" href="loop3.html">圈 3 产品</a>
+  </div>
+</nav>
+
+<header class="product-hero">
+  <div class="wrap">
+    <span class="loop-tag l1">圈 1 交付的产品</span>
+    <h1>合同流程表 v1 · 关键信息提取</h1>
+    <p class="sub">来自法务例会纪要：审批靠人肉翻 PDF，金额/账期/付款条件靠肉眼核对。本产品把三项字段自动提取进法务天天在用的流程表，法务在表里复核——不改变他们的工作习惯，只把翻 PDF 的环节删掉。</p>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="mock-frame">
+      <div class="mock-bar">
+        <span class="dot" style="background:#f87171"></span>
+        <span class="dot" style="background:#fbbf24"></span>
+        <span class="dot" style="background:#34d399"></span>
+        <span style="margin-left:8px">中台 · 合同流程表（法务复核台）</span>
+      </div>
+      <div class="mock-body">
+        <div class="mock-title">
+          <span>合同流程表</span>
+          <span class="stat-chips">
+            <span class="chip">积压 <b>40 → 3</b> 份</span>
+            <span class="chip">本批回归 <b>50</b> 份</span>
+            <span class="chip">标黄待确认 <b>3</b></span>
+          </span>
+        </div>
+        <table>
+          <thead>
+            <tr><th>合同编号</th><th>对方主体</th><th>金额</th><th>账期</th><th>付款条件</th><th>置信度</th><th>原文定位</th><th>状态</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>HT-2026-0118</td><td>云启科技</td><td>¥1,280,000</td><td>月结 30 天</td>
+              <td>验收后付 80%，质保金 20%</td>
+              <td><span class="conf ok">0.97</span></td><td>P3¶2</td><td>✓ 复核通过</td>
+            </tr>
+            <tr>
+              <td>HT-2026-0121</td><td>恒润贸易</td><td>¥356,000</td><td>款到发货</td>
+              <td>预付 100%</td>
+              <td><span class="conf ok">0.95</span></td><td>P2¶1</td><td>✓ 复核通过</td>
+            </tr>
+            <tr class="row-warn">
+              <td>HT-2026-0124</td><td>明州物流</td><td>¥86,500（大写不一致）</td><td>月结 60 天</td>
+              <td>分 3 期支付</td>
+              <td><span class="conf low">0.88</span></td><td>P5¶3</td><td>⚠ 待人工确认</td>
+            </tr>
+            <tr>
+              <td>HT-2026-0126</td><td>北辰数据</td><td>¥2,040,000</td><td>月结 45 天</td>
+              <td>里程碑付款 · 3 节点</td>
+              <td><span class="conf ok">0.94</span></td><td>P6¶1</td><td>✓ 复核通过</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="mock-note"><b>界面说明：</b>标黄行 = 提取置信度低于 0.92 阈值，系统强制人工确认后才放行；「原文定位」记录页码 + 段落，法务点击即跳转合同原文对应位置，复核从"翻 20 页"变成"看一眼"。金额大小写冲突时以中文大写为准（圈 1 人工评审改出的规则）。</p>
+
+    <div class="stat-grid">
+      <div class="stat-card"><div class="v">96%</div><div class="k">50 份历史合同回归准确率（验收线 95%）</div></div>
+      <div class="stat-card"><div class="v">40 → 3</div><div class="k">积压合同批量重跑，37 份自动通过</div></div>
+      <div class="stat-card"><div class="v">3 天</div><div class="k">从会议纪要到上线</div></div>
+      <div class="stat-card"><div class="v">1 条</div><div class="k">沉淀能力边界：字段提取类 · 辅助级</div></div>
+    </div>
+
+    <div class="tbl-card">
+      <h3>为什么它是"产品"而不是"功能"</h3>
+      <div class="desc">三个刻意的设计决策：</div>
+      <table>
+        <tbody>
+          <tr><th style="width:180px">长进现有表格</th><td>不做新系统、不做新入口。法务已经在用流程表，提取结果只是新增 5 列—— adoption 成本为零。</td></tr>
+          <tr><th>置信度闸门</th><td>宁可标黄让人多看一眼，不可错放进表。这是圈 1 人工评审改出来的规则，也写进了能力边界表。</td></tr>
+          <tr><th>原文定位</th><td>每个字段可回溯到页码段落——可追溯性是这个岗位作业的核心要求，从第一个产品就立住。</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="p-nav">
+      <a href="../index.html#loop-1">← 返回主站看圈 1 回放</a>
+      <a href="loop2.html">下一圈产品：账期提醒 →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">于林海 · 15767206657 · contract-flywheel</div>
+</footer>
+
+</body>
+</html>

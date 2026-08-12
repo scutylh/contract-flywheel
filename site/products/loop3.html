@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>圈 3 交付 · 准入关键词标红与业务组同步 — contract-flywheel</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="brand" href="../index.html">contract-flywheel</a>
+    <a class="navlink" href="../index.html#loop-3">← 主站·圈 3 回放</a>
+    <a class="navlink" href="loop1.html">圈 1 产品</a>
+    <a class="navlink" href="loop2.html">圈 2 产品</a>
+  </div>
+</nav>
+
+<header class="product-hero">
+  <div class="wrap">
+    <span class="loop-tag l3">圈 3 交付的产品</span>
+    <h1>准入关键词标红 · 审核结果同步业务组</h1>
+    <p class="sub">法务要「独家 / 排他 / 最惠国」等准入关键词命中标红，业务组要同步看到审核结果。这一圈全程无人工编码：Agent 检索前两圈沉淀的管线、组件与约束，自主开发，另一组 Agent 评审，人工只看三样东西后一键确认。</p>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <div class="mock-frame">
+      <div class="mock-bar">
+        <span class="dot" style="background:#f87171"></span>
+        <span class="dot" style="background:#fbbf24"></span>
+        <span class="dot" style="background:#34d399"></span>
+        <span style="margin-left:8px">中台 · 合同流程表 v2（含准入标红）＋ 业务组消息</span>
+      </div>
+      <div class="mock-body">
+        <table>
+          <thead>
+            <tr><th>合同编号</th><th>对方主体</th><th>金额</th><th>准入关键词</th><th>命中上下文</th><th>状态</th></tr>
+          </thead>
+          <tbody>
+            <tr class="row-hit">
+              <td>HT-2026-0131</td><td>星海传媒</td><td>¥3,600,000</td>
+              <td><span class="kw">独家</span></td>
+              <td>「……授予甲方中国大陆地区<span class="kw">独家</span>代理权，未经书面同意……」P4¶2</td>
+              <td>⚠ 准入复核中</td>
+            </tr>
+            <tr>
+              <td>HT-2026-0132</td><td>云启科技</td><td>¥780,000</td>
+              <td>—</td><td>—</td><td>✓ 复核通过</td>
+            </tr>
+            <tr class="row-hit">
+              <td>HT-2026-0134</td><td>瀚海供应链</td><td>¥1,150,000</td>
+              <td><span class="kw">最惠国</span></td>
+              <td>「……乙方承诺给予甲方不低于任何第三方的<span class="kw">最惠国</span>待遇……」P7¶1</td>
+              <td>⚠ 准入复核中</td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="height:14px"></div>
+        <div class="msg-card">
+          <div class="m-head"><span>系统 · 合同审核同步</span><span>自动 · 发业务组</span></div>
+          <div class="m-title">HT-2026-0131 审核结果已同步</div>
+          <ul>
+            <li>命中准入关键词 <b>1</b> 项（<span class="kw">独家</span>），流程表已标红</li>
+            <li>当前状态：法务准入复核中 · 预计 1 个工作日内反馈</li>
+          </ul>
+          <div class="m-foot">通知模板为已人审模板（圈 2 建立的闸门），故本动作可自动发送。</div>
+        </div>
+      </div>
+    </div>
+    <p class="mock-note"><b>界面说明：</b>关键词表外置为 yaml 配置（法务可自行维护，含同义词表）；命中记录前后 50 字上下文，复核不用回翻原文；标红行复用圈 1 的置信度约束与圈 2 的通知路由——这就是"改动 &lt; 120 行"的原因。</p>
+
+    <div class="stat-grid">
+      <div class="stat-card"><div class="v">3.5 小时</div><div class="k">需求 → 上线（圈 1 同类改动 3 天）</div></div>
+      <div class="stat-card"><div class="v">0 行</div><div class="k">人工编写代码</div></div>
+      <div class="stat-card"><div class="v">2 条</div><div class="k">评审组 Agent 建议，均已闭环</div></div>
+      <div class="stat-card"><div class="v">40 秒</div><div class="k">人工确认耗时（看检索记录/评审意见/回归报告）</div></div>
+    </div>
+
+    <div class="tbl-card">
+      <h3>为什么这一圈敢放手</h3>
+      <table>
+        <tbody>
+          <tr><th style="width:180px">站在资产之上</th><td>提取管线来自圈 1、通知路由来自圈 2、写入约束来自双审记录——自主开发的前提是"没有新东西"。</td></tr>
+          <tr><th>准入条件显式化</th><td>自治交付 = 复用已验证组件 且 改动 &lt;150 行 且 回归全绿。条件写死在能力边界表里，Agent 自己判断、自己举证。</td></tr>
+          <tr><th>人退到闸门后</th><td>人工不再逐行审代码，而是审三份证据：检索记录、Agent 评审意见、回归报告。40 秒确认，否决权仍在人手里。</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="p-nav">
+      <a href="loop2.html">← 上一圈产品：账期提醒</a>
+      <a href="../index.html#engineering">看支撑它的工程设计 →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">于林海 · 15767206657 · contract-flywheel</div>
+</footer>
+
+</body>
+</html>

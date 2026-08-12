@@ -19,6 +19,8 @@
 ├── scripts/
 │   └── build-traces.mjs # traces/*.json → site/js/traces.js 打包脚本
 └── site/                # 纯静态演示站（nginx 直发即可）
+    ├── index.html       # 叙事主站：飞轮总览 + 三圈回放 + 工程设计 + 90 天
+    └── products/        # 每圈交付的产品页（界面 mock + 验收数据）
 ```
 
 ## 本地预览
