@@ -6,8 +6,8 @@
 
   var NAV = [
     { id: "home",       label: "首页",         href: "index.html" },
-    { id: "erlang",     label: "二郎 Erlang", href: "erlang/index.html" },
-    { id: "automation", label: "开发自动化",   href: "automation/index.html" },
+    { id: "erlang",     label: "二郎 · 需求澄清工具", href: "erlang/index.html" },
+    { id: "automation", label: "鲁班 · Agentic 开发", href: "automation/index.html" },
     { id: "mindmap",    label: "思维导图",     href: "mindmap/index.html" },
     { id: "gantt",      label: "甘特图",       href: "gantt/index.html" }
   ];

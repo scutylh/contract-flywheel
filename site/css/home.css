@@ -1,7 +1,11 @@
 /* 首页专属样式 */
-.hero { padding: 76px 0 44px; position: relative; }
+.hero { padding: 88px 0 56px; position: relative; }
 .hero .kicker { color: var(--accent); font-size: 13px; font-weight: 600; letter-spacing: .08em; margin-bottom: 14px; }
-.hero h1 { font-size: 42px; line-height: 1.22; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 20px; }
+.hero h1 {
+  font-size: 60px; line-height: 1.15; font-weight: 700; letter-spacing: -0.01em;
+  margin-bottom: 24px; text-align: center;
+  font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSong", "SimSun", serif;
+}
 .hero .oneline { font-size: 19px; color: var(--muted); margin-bottom: 28px; max-width: 720px; }
 .hero .oneline strong { color: var(--ink); }
 .hero .meta { display: flex; flex-wrap: wrap; gap: 10px 26px; font-size: 13px; color: var(--muted); }
@@ -24,6 +28,6 @@
 .entry-go { font-size: 13px; color: var(--accent); font-weight: 700; }
 
 @media (max-width: 760px) {
-  .hero h1 { font-size: 30px; }
+  .hero h1 { font-size: 38px; }
   .entry-grid { grid-template-columns: 1fr; }
 }

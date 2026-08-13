@@ -19,13 +19,78 @@
   <header class="loop-head">
     <div class="wrap">
       <h1>甘特图</h1>
-      <p class="sub">交付计划甘特图 —— 待填充。</p>
+      <p class="sub">0-1 年计划：二郎把需求澄清到位（前半段），鲁班 · Agentic 开发把需求变成上线的代码（后半段）。</p>
     </div>
   </header>
 
   <section class="sec">
     <div class="wrap">
-      <div class="gantt-empty">甘特图区域（空白占位）</div>
+      <div class="gantt-scroll">
+        <div class="gantt">
+          <div class="gantt-axis">
+            <div class="g-corner">任务 \ 月份</div>
+            <div class="g-mons">
+              <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span>
+              <span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span>
+            </div>
+          </div>
+
+          <div class="g-group-head erlang">二郎 Erlang · 需求澄清（前半段）</div>
+
+          <div class="g-row">
+            <div class="g-label">Agent 底座 + 多源接入 + 归一化 + 分层记忆</div>
+            <div class="g-track"><div class="g-bar erlang" style="left:0%;width:8.33%" title="第 1 月">1月</div></div>
+          </div>
+          <div class="g-row">
+            <div class="g-label">多 Agent 协作流水线</div>
+            <div class="g-track"><div class="g-bar erlang" style="left:8.33%;width:8.33%" title="第 2 月">2月</div></div>
+          </div>
+          <div class="g-row">
+            <div class="g-label">持久存储 + 需求提单</div>
+            <div class="g-track"><div class="g-bar erlang" style="left:16.67%;width:8.33%" title="第 3 月">3月</div></div>
+          </div>
+          <div class="g-row">
+            <div class="g-label">最小闭环跑通 + 上线打磨</div>
+            <div class="g-track"><div class="g-bar erlang" style="left:25%;width:8.33%" title="第 4 月">4月</div></div>
+          </div>
+          <div class="g-row">
+            <div class="g-label">反馈闭环 + 提示词迭代（持续改进 Skill）</div>
+            <div class="g-track"><div class="g-bar erlang" style="left:33.33%;width:33.33%" title="第 5-8 月">5-8月</div></div>
+          </div>
+          <div class="g-row">
+            <div class="g-label">能力沉淀 + 规模化</div>
+            <div class="g-track"><div class="g-bar erlang" style="left:66.67%;width:33.33%" title="第 9-12 月">9-12月</div></div>
+          </div>
+
+          <div class="g-group-head auto">鲁班 · Agentic 开发（后半段）</div>
+
+          <div class="g-row">
+            <div class="g-label">需求文档解析 + 任务拆解 Agent</div>
+            <div class="g-track"><div class="g-bar auto" style="left:0%;width:16.67%" title="0-2 月">0-2月</div></div>
+          </div>
+          <div class="g-row">
+            <div class="g-label">编码 Agent + 沙箱测试（复用组件 / Skill）</div>
+            <div class="g-track"><div class="g-bar auto" style="left:16.67%;width:25%" title="2-5 月">2-5月</div></div>
+          </div>
+          <div class="g-row">
+            <div class="g-label">门禁审核 + 部署回滚</div>
+            <div class="g-track"><div class="g-bar auto" style="left:41.67%;width:25%" title="5-8 月">5-8月</div></div>
+          </div>
+          <div class="g-row">
+            <div class="g-label">流水线工具上线，交付业务团队使用</div>
+            <div class="g-track"><div class="g-bar auto" style="left:50%;width:25%" title="6-9 月">6-9月</div></div>
+          </div>
+          <div class="g-row">
+            <div class="g-label">持续改进</div>
+            <div class="g-track"><div class="g-bar auto" style="left:66.67%;width:33.33%" title="9-12 月">9-12月</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="gantt-legend">
+        <span><span class="lg lg-erlang"></span>二郎 Erlang · 需求澄清</span>
+        <span><span class="lg lg-auto"></span>鲁班 · Agentic 开发</span>
+      </div>
     </div>
   </section>
 </main>
