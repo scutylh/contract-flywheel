@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>思维导图 — contract-flywheel</title>
+<link rel="stylesheet" href="../css/common.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-nav="mindmap" data-base="../">
+
+<nav class="topbar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">思维导图</a>
+  </div>
+</nav>
+
+<div class="markmap" id="mm">
+  <script type="text/template">
+# 开发流程的 AI 化
+
+## 二郎 Erlang · 需求澄清（前半段）
+
+### 多源接入
+- 飞书 / 微信 API 对接（纪要、聊天记录）
+- 文件上传通道（录音、扫描件）
+- 格式解析与预处理
+
+### 归一化
+- 语音转文字：模型选型（Whisper / 云厂商 ASR）
+- 扫描件 OCR：模型选型
+- 转写 / OCR 评测：准确率基准集
+- 工具链路：转写 → 文本 → 来源标注
+- 基础设施：音频 / 图像处理 pipeline
+
+### 分层记忆
+- 摘要生成（LLM 索引）
+- 原文锚点定位（段落引用）
+- 向量检索与存储选型
+- 摘要 → 原文回溯链路
+
+### 多 Agent 协作
+- Agent 角色与职责定义
+- 群聊编排协议（接力 / 纠偏）
+- 上下文与记忆传递
+- 驳回 / 复审闭环
+
+### 持久存储
+- 三层数据模型设计（文件 / 进展 / 细节）
+- 存储选型（对象存储 / 数据库）
+- 反馈池（成功 / 失败样本）
+- 留痕与审计
+
+### 产出：结构化需求文档（可回溯）
+
+## 开发自动化（后半段）
+
+### 编排流水线
+- 需求文档解析
+- 任务拆解 Agent
+- 编码 Agent（复用组件 / Skill）
+- 沙箱测试环境
+- 门禁审核（自动 + 人工）
+- 部署与回滚
+
+### 中台架构
+- 公共组件下沉
+- Skill 沉淀与复用
+- 审核门禁系统
+- 沙箱隔离
+- 评估 + 回归体系
+- 调试 / 回放工作台
+  </script>
+</div>
+
+<nav class="site-nav" data-navbar></nav>
+
+<script src="https://cdn.jsdelivr.net/npm/markmap-autoloader@0.16"></script>
+<script>
+  /* 硬线条：把 markmap 的 d3 贝塞尔连线改成直角折线（Z 形），折叠/展开后仍保持 */
+  function hardenLinks() {
+    document.querySelectorAll('.markmap-link').forEach(function (p) {
+      var d = p.getAttribute('d') || '';
+      if (d.indexOf('C') === -1) return;
+      var nums = d.match(/[-\d.]+/g);
+      if (!nums || nums.length < 8) return;
+      var x1 = +nums[0], y1 = +nums[1], x2 = +nums[6], y2 = +nums[7];
+      var mx = (x1 + x2) / 2;
+      p.setAttribute('d', 'M' + x1 + ',' + y1 + 'L' + mx + ',' + y1 + 'L' + mx + ',' + y2 + 'L' + x2 + ',' + y2);
+    });
+  }
+  (function watch() {
+    var svg = document.querySelector('.markmap svg');
+    if (!svg) { setTimeout(watch, 200); return; }
+    hardenLinks();
+    new MutationObserver(hardenLinks).observe(svg, { childList: true, subtree: true, attributes: true, attributeFilter: ['d'] });
+  })();
+</script>
+<script src="../js/nav.js"></script>
+</body>
+</html>

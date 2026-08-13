@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>开发自动化 — contract-flywheel</title>
+<link rel="stylesheet" href="../css/common.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-nav="automation" data-base="../">
+
+<nav class="topbar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">开发自动化</a>
+    <div class="nav-links">
+      <a href="#division">人机分工</a>
+      <a href="#pipeline">编排流水线</a>
+      <a href="#arch">中台架构</a>
+      <a href="#plan">交付节奏</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <header class="loop-head">
+    <div class="wrap">
+      <span class="loop-tag l2">需求澄清之后 · 开发过程的自动化</span>
+      <h1>开发自动化</h1>
+      <p class="sub">需求文档进了开发流水线：Agent 拆任务、写代码、跑测试、过门禁，人只审关键节点。能自动化的前提，是中台架构本身对 AI 友好。</p>
+    </div>
+  </header>
+
+  <section class="sec" id="division">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="no">01 · 人机分工愿景</div>
+        <h2>AI 和人的工作目标，从现在到远期</h2>
+        <p>把开发拆成「需求 → 编码 → 测试 → 上线」四个动作，上栏是人类、下栏是 Agent。上面是当前，下面是未来——人逐步退出执行层。</p>
+      </div>
+      <div data-division-play></div>
+    </div>
+  </section>
+
+  <section class="sec" id="pipeline">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="no">02 · Agent 编排流水线</div>
+        <h2>一条流水线，把需求文档变成上线的代码</h2>
+        <p>每个节点都是可独立替换的组件，节点之间有明确的门禁——不过门禁，不进下一段。</p>
+      </div>
+      <div class="pipe">
+        <div class="pipe-node">
+          <div class="pn-title">需求文档</div>
+          <div class="pn-desc">二郎产出，结构化、可执行</div>
+        </div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-node">
+          <div class="pn-title">任务拆解</div>
+          <div class="pn-desc">Agent 拆成可编码子任务</div>
+        </div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-node">
+          <div class="pn-title">编码</div>
+          <div class="pn-desc">生成代码，复用公共组件</div>
+        </div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-node">
+          <div class="pn-title">沙箱测试</div>
+          <div class="pn-desc">隔离环境跑测试 + 回归</div>
+        </div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-node">
+          <div class="pn-title">审核门禁</div>
+          <div class="pn-desc">Agent 自审 + 人工审核</div>
+        </div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-node">
+          <div class="pn-title">上线</div>
+          <div class="pn-desc">自动部署，可回滚</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="arch">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="no">03 · 中台架构对 AI 友好</div>
+        <h2>自动化不是靠模型强，是靠工程把路铺平</h2>
+        <p>四层堆叠，自下而上——底座给基础，能力给复用，护栏给约束，工具给工作台。</p>
+      </div>
+      <div id="archBox"></div>
+    </div>
+  </section>
+
+  <section class="sec" id="plan">
+    <div class="wrap">
+      <div class="sec-head">
+        <div class="no">04 · 交付节奏</div>
+        <h2>分三步走，每一步都在扩大自治范围</h2>
+        <p>先打通闭环，再扩覆盖，最后交自治。</p>
+      </div>
+      <div class="plan-grid">
+        <div class="plan-card">
+          <div class="d">最小闭环 · 0-1 年</div>
+          <h3>打通需求 → 开发 → 上线全链路</h3>
+          <ul>
+            <li>里程碑一：需求文档解析 + 任务拆解 Agent</li>
+            <li>里程碑二：编码 Agent（复用组件 / Skill）</li>
+            <li>里程碑三：沙箱测试 + 门禁审核</li>
+            <li>里程碑四：部署上线 + 回滚</li>
+          </ul>
+        </div>
+        <div class="plan-card">
+          <div class="d">半自治 · 1-3 年</div>
+          <h3>常规流程自主交付</h3>
+          <ul>
+            <li>覆盖审批、查询、数据同步等常规流程</li>
+            <li>标准化 MR 逐步放开 AI 审核</li>
+          </ul>
+        </div>
+        <div class="plan-card">
+          <div class="d">全自治 · 3-5 年</div>
+          <h3>全链路 AI 自治</h3>
+          <ul>
+            <li>开发、调试、审核、运维、优化全链路自主</li>
+            <li>人退到顶层规则与合规</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<nav class="site-nav" data-navbar></nav>
+
+<script src="app.js"></script>
+<script src="../js/nav.js"></script>
+</body>
+</html>

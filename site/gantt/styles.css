@@ -1,0 +1,6 @@
+/* 甘特图专属样式 */
+.gantt-empty {
+  border: 1px dashed var(--line); border-radius: 12px;
+  padding: 80px 20px; text-align: center;
+  color: var(--muted); font-size: 14px;
+}

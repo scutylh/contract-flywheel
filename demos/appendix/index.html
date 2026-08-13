@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>附录 · 这份作业本身就是一次 harness 实践 — contract-flywheel</title>
+<style>
+  :root { --ink:#111827; --muted:#6b7280; --line:#eceef2; --accent:#2563eb; --bg:#fff; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg); color:var(--ink); font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; line-height:1.7; font-size:15px; }
+  .wrap { max-width:760px; margin:0 auto; padding:0 32px; }
+  header { padding:56px 0 24px; }
+  header h1 { font-size:28px; margin:14px 0 10px; letter-spacing:-.01em; }
+  .loop-tag { display:inline-block; font-size:11px; font-weight:700; padding:3px 11px; border-radius:12px; color:#fff; background:#0f766e; }
+  .block { margin-bottom:32px; }
+  .block h3 { font-size:19px; margin-bottom:12px; }
+  .block ul { padding-left:18px; }
+  .block li { margin-bottom:7px; font-size:14px; }
+  .note { color:var(--muted); font-size:13.5px; margin-top:14px; padding-top:14px; border-top:1px solid var(--line); }
+  a { color:var(--accent); text-decoration:none; }
+  a:hover { text-decoration:underline; }
+  footer { padding:36px 0 32px; text-align:center; color:var(--muted); font-size:13px; border-top:1px solid var(--line); }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <span class="loop-tag">附录</span>
+    <h1>这份作业本身就是一次 harness 实践</h1>
+  </div>
+</header>
+<section>
+  <div class="wrap">
+    <div class="block">
+      <h3>本作业的开发方式</h3>
+      <ul>
+        <li><strong>设计目标（人）</strong>：确定叙事主线、场景选题与页面结构，即本文档的 PLAN。</li>
+        <li><strong>执行（Agent）</strong>：页面代码、轨迹数据组织与素材初稿由 Agent 生成。</li>
+        <li><strong>审查接管（人）</strong>：所有业务语义、数字与结论由我本人逐条审校后确认。</li>
+      </ul>
+      <p class="note">诚实声明：本页演示中的业务数据为模拟数据；执行轨迹由自研 mini-harness 组织，LLM 调用以录制 fixture 回放呈现，关键内容完整、次要部分以省略号略去。选择回放而非实时调用，是为了让评审任何时刻打开都看到一致、可复盘的过程——「可回放」本身就是工程目标之一。</p>
+    </div>
+    <div class="block">
+      <h3>源码与文档</h3>
+      <ul>
+        <li>仓库：<a href="https://github.com/scutylh/contract-flywheel" target="_blank" rel="noopener">github.com/scutylh/contract-flywheel</a></li>
+        <li>作业计划：<a href="https://github.com/scutylh/contract-flywheel/blob/main/docs/PLAN-v0.1.md" target="_blank" rel="noopener">docs/PLAN-v0.1.md</a></li>
+        <li>执行轨迹数据：<a href="https://github.com/scutylh/contract-flywheel/tree/main/traces" target="_blank" rel="noopener">traces/</a>（fixture，后续由 harness 真实跑出）</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<footer>
+  <div class="wrap">于林海 · 15767206657 · contract-flywheel —— 规划的第一步已经在跑</div>
+</footer>
+</body>
+</html>

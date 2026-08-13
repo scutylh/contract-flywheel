@@ -3,20 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>从一段会议纪要到自进化飞轮 —— 合同审核 Agent 的三圈迭代 · 于林海</title>
-<link rel="stylesheet" href="css/style.css">
+<title>开发流程的 AI 化 — contract-flywheel · 于林海</title>
+<link rel="stylesheet" href="css/common.css">
+<link rel="stylesheet" href="css/home.css">
 </head>
-<body data-chapter="1" data-base="">
+<body data-nav="home" data-base="">
 
-<div class="topbar" data-topbar></div>
+<nav class="topbar">
+  <div class="wrap">
+    <a class="brand">开发流程的 AI 化</a>
+  </div>
+</nav>
 
-<main class="chapter-body">
-
+<main>
   <header class="hero">
     <div class="wrap">
       <div class="kicker">入职前作业 · AGENT 工程</div>
-      <h1>从一段会议纪要到自进化飞轮<br>—— 合同审核 Agent 的三圈迭代</h1>
-      <p class="oneline">别人交规划，<strong>我交的是规划的第一步已经在跑的样子</strong>：同一套合同审核系统迭代三圈，人机分工从「人 70% / Agent 30%」走到「Agent 95% / 人仅确认」。</p>
+      <h1>开发流程的 AI 化<br></h1>
+      <p class="oneline">——从需求澄清到开发自动化</p>
       <div class="meta">
         <span>作者：于林海 · 15767206657</span>
         <span>源码：<a href="https://github.com/scutylh/contract-flywheel" target="_blank" rel="noopener">github.com/scutylh/contract-flywheel</a></span>
@@ -25,87 +29,35 @@
     </div>
   </header>
 
-  <section class="flywheel-sec">
+  <section class="sec">
     <div class="wrap">
       <div class="sec-head">
-        <div class="no">飞轮总览</div>
-        <h2>同一个系统，三圈迭代，人逐步退出执行层</h2>
-        <p>每一圈的输入都来自上一圈的真实使用反馈；每一圈的产出——Skill、组件、约束、能力边界——都沉淀为下一圈的资产。点击任意一圈进入该圈的完整回放。</p>
+        <div class="no">两个工具 · 一条链路</div>
+        <h2>把「人说的话」变成「能跑的代码」</h2>
+        <p>一个负责听懂，一个负责动手。点击进入各自的完整演示。</p>
       </div>
-      <div class="flywheel-card">
-        <div class="flywheel-svg">
-          <svg viewBox="0 0 420 320" role="img" aria-label="三圈飞轮持续改进示意图">
-            <defs>
-              <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-                <path d="M 0 1 L 9 5 L 0 9 z" fill="#2563eb"></path>
-              </marker>
-              <marker id="arrow-light" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-                <path d="M 0 1 L 9 5 L 0 9 z" fill="#b7c6de"></path>
-              </marker>
-            </defs>
-            <path d="M 32 282 L 388 58" fill="none" stroke="#c7d4ea" stroke-width="1.5" stroke-dasharray="4 6" marker-end="url(#arrow-light)"></path>
-            <path d="M 126 190 Q 148 180 170 174" fill="none" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arrow)"></path>
-            <path d="M 250 130 Q 270 120 289 115" fill="none" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arrow)"></path>
-            <text x="148" y="160" text-anchor="middle" class="fw-flow">沉淀：模板 · Skill · 边界</text>
-            <text x="269" y="102" text-anchor="middle" class="fw-flow">沉淀：澄清 Skill · notify 组件</text>
-            <path d="M 386 105 C 430 160 420 250 330 280 C 250 305 120 300 52 250" fill="none" stroke="#b7c6de" stroke-width="1.5" stroke-dasharray="5 5" marker-end="url(#arrow-light)"></path>
-            <text x="235" y="309" text-anchor="middle" class="fw-flow">资产回流 · 下一圈起点更高</text>
-            <g class="fw-node" data-href="loops/loop-1.html">
-              <circle class="spin-slow" cx="88" cy="218" r="31" fill="none" stroke="#e3d5c2" stroke-width="1.5" stroke-dasharray="3 6"></circle>
-              <circle class="core" cx="88" cy="218" r="40" fill="#ffffff" stroke="#b45309" stroke-width="2"></circle>
-              <text x="88" y="222" text-anchor="middle" class="fw-label">圈 1</text>
-              <text x="88" y="272" text-anchor="middle" class="fw-sub">从 0 到可用</text>
-              <text x="88" y="286" text-anchor="middle" class="fw-sub">人 70 · Agent 30</text>
-            </g>
-            <g class="fw-node" data-href="loops/loop-2.html">
-              <circle class="spin-slow" cx="212" cy="152" r="36" fill="none" stroke="#ddd3f0" stroke-width="1.5" stroke-dasharray="3 6"></circle>
-              <circle class="core" cx="212" cy="152" r="45" fill="#ffffff" stroke="#6d28d9" stroke-width="2"></circle>
-              <text x="212" y="156" text-anchor="middle" class="fw-label">圈 2</text>
-              <text x="212" y="212" text-anchor="middle" class="fw-sub">听懂反馈</text>
-              <text x="212" y="226" text-anchor="middle" class="fw-sub">人 50 · Agent 50</text>
-            </g>
-            <g class="fw-node" data-href="loops/loop-3.html">
-              <circle class="spin-slow" cx="336" cy="92" r="41" fill="none" stroke="#c4dcd8" stroke-width="1.5" stroke-dasharray="3 6"></circle>
-              <circle class="core" cx="336" cy="92" r="50" fill="#ffffff" stroke="#0f766e" stroke-width="2"></circle>
-              <text x="336" y="96" text-anchor="middle" class="fw-label">圈 3</text>
-              <text x="336" y="156" text-anchor="middle" class="fw-sub">接近自治</text>
-              <text x="336" y="170" text-anchor="middle" class="fw-sub">人 5 · Agent 95</text>
-            </g>
-          </svg>
-        </div>
-        <div class="flywheel-side">
-          <h3>主角不是功能，是持续改进的结构</h3>
-          <p>飞轮不是转一圈就停：每一圈的沉淀物——Skill、组件、约束、评估用例——直接成为下一圈的起点资产，所以三圈做同一套系统，人重复做的事越来越少、自治边界一圈比一圈大。持续改进不是口号，是这个回路的结构。</p>
-          <a class="ratio-row" href="loops/loop-1.html">
-            <span class="ratio-name">圈 1 · 从 0 到可用</span>
-            <div class="ratio-bar"><div class="h" style="width:70%"></div><div class="a" style="width:30%"></div></div>
-            <span class="ratio-num">人 70 / AI 30</span>
-          </a>
-          <a class="ratio-row" href="loops/loop-2.html">
-            <span class="ratio-name">圈 2 · 听懂反馈</span>
-            <div class="ratio-bar"><div class="h" style="width:50%"></div><div class="a" style="width:50%"></div></div>
-            <span class="ratio-num">人 50 / AI 50</span>
-          </a>
-          <a class="ratio-row" href="loops/loop-3.html">
-            <span class="ratio-name">圈 3 · 接近自治</span>
-            <div class="ratio-bar"><div class="h" style="width:5%"></div><div class="a" style="width:95%"></div></div>
-            <span class="ratio-num">人 5 / AI 95</span>
-          </a>
-          <div class="legend">
-            <span><i style="background:#d9a05b"></i>人工完成</span>
-            <span><i style="background:#6d28d9"></i>Agent 完成</span>
-          </div>
-        </div>
+      <div class="entry-grid">
+        <a class="entry-card" href="erlang/index.html">
+          <span class="entry-tag t1">前半段 · 听懂需求</span>
+          <h3>二郎 Erlang · 需求澄清工具</h3>
+          <p class="entry-sub">从模糊的原始信息到可落地的需求文档</p>
+          <p class="entry-desc">多源原始记录归一化、分层记忆，多 Agent 协作澄清，收敛出可落地的需求文档。</p>
+          <span class="entry-go">进入演示 →</span>
+        </a>
+        <a class="entry-card" href="automation/index.html">
+          <span class="entry-tag t2">后半段 · 开发自动化</span>
+          <h3>开发自动化</h3>
+          <p class="entry-sub">需求澄清之后，开发过程的自动化</p>
+          <p class="entry-desc">需求文档进流水线，Agent 拆任务、写代码、跑测试、过门禁，人只审关键节点。</p>
+          <span class="entry-go">进入演示 →</span>
+        </a>
       </div>
-      <div class="flip-hint">向右翻页进入 <b>圈 1</b> · 也可点击上方飞轮节点直达任意一圈 · 键盘 <b>← / →</b> 翻页</div>
     </div>
   </section>
-
 </main>
 
-<div class="chapter-progress" data-progress></div>
-<div class="chapter-arrows" data-arrows></div>
+<nav class="site-nav" data-navbar></nav>
 
-<script src="js/main.js"></script>
+<script src="js/nav.js"></script>
 </body>
 </html>

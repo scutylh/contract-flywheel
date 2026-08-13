@@ -1,0 +1,90 @@
+/* 开发自动化专属样式 */
+
+/* ---- 头部 ---- */
+.loop-tag { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 11px; border-radius: 12px; color: #fff; margin-top: 16px; }
+.loop-tag.l2 { background: var(--agent); }
+
+/* ---- 分工矩阵 ---- */
+.dm { border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: #fff; }
+.dm-row { display: grid; }
+.dm-row + .dm-row { border-top: 1px solid var(--line); }
+.dm-corner, .dm-h, .dm-lane, .dm-cell { padding: 14px 16px; border-left: 1px solid var(--line); }
+.dm-corner, .dm-h, .dm-lane, .dm-cell:first-child { border-left: none; }
+.dm-h { font-weight: 700; font-size: 13px; text-align: center; background: #fafbfc; color: var(--ink); }
+.dm-lane { font-weight: 800; font-size: 14px; display: flex; align-items: center; }
+.dm-lane.human { color: var(--human); }
+.dm-lane.agent { color: var(--agent); }
+.dm-cell { display: flex; flex-direction: column; gap: 8px; justify-content: center; }
+.dm-bar { height: 10px; border-radius: 5px; background: #eef1f5; overflow: hidden; }
+.dm-fill { height: 100%; border-radius: 5px; transition: width .6s ease; }
+.dm-fill.human { background: linear-gradient(90deg, #d9a05b, #b45309); }
+.dm-fill.agent { background: linear-gradient(90deg, #9f7aea, #6d28d9); }
+.dm-label { font-size: 12px; color: var(--ink); line-height: 1.4; }
+.dm-pct { font-size: 11px; color: var(--muted); font-weight: 700; }
+.dm-cell.empty .dm-bar { background: repeating-linear-gradient(45deg, #f1f3f6, #f1f3f6 4px, #fff 4px, #fff 8px); }
+.dm-cell.empty .dm-label { color: var(--muted); font-style: italic; }
+
+/* ---- 编排流水线 ---- */
+.pipe { display: flex; align-items: stretch; gap: 8px; flex-wrap: wrap; }
+.pipe-node { flex: 1; min-width: 120px; border: 1px solid var(--line); border-radius: 10px; padding: 14px; background: #fff; }
+.pn-title { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+.pn-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+.pipe-arrow { display: flex; align-items: center; color: var(--accent); font-size: 18px; font-weight: 700; }
+
+/* ---- 中台架构：分层堆叠（层名竖排 + 组件块网格，复刻二郎） ---- */
+.arch-layer {
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  background: var(--lb, #f9fafb);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--la, #6b7280);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.arch-layer + .arch-layer { margin-top: 12px; }
+.arch-label {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 14px;
+  letter-spacing: 3px;
+  color: var(--la, #6b7280);
+  padding: 14px 0;
+  background: rgba(255, 255, 255, .55);
+}
+.arch-items {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+  padding: 16px 20px;
+}
+.arch-item {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  text-align: center;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, .05);
+}
+
+/* ---- 分工愿景：当前 + 未来 上下并列 ---- */
+.division-stage { margin-bottom: 22px; }
+.division-stage:last-child { margin-bottom: 0; }
+.ds-label { font-size: 13px; font-weight: 700; color: var(--accent); margin-bottom: 10px; }
+
+/* ---- 交付节奏 ---- */
+.plan-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 40px; }
+.plan-card .d { font-size: 13px; font-weight: 800; color: var(--accent); margin-bottom: 6px; }
+.plan-card h3 { font-size: 18px; margin-bottom: 12px; }
+.plan-card ul { padding-left: 18px; font-size: 14px; color: var(--ink); }
+.plan-card li { margin-bottom: 8px; }
+
+@media (max-width: 760px) {
+  .pipe-node { flex: 1 1 42%; }
+}

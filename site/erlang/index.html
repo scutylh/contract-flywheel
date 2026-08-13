@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>二郎 Erlang · 需求澄清工具</title>
+<link rel="stylesheet" href="../css/common.css">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-nav="erlang" data-base="../">
+
+<nav class="topbar">
+  <div class="wrap">
+    <a class="brand" href="../index.html">二郎 Erlang <span>需求澄清工具</span></a>
+    <div class="nav-links">
+      <a href="#memory">分层记忆</a>
+      <a href="#agents">多 Agent 协作</a>
+      <a href="#storage">持久存储</a>
+      <a href="#demo" class="nav-demo">演示</a>
+      <a href="#components">架构</a>
+      <a href="#plan">完成计划</a>
+      <a href="#next">下一步</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-badge">从模糊的原始信息到可落地的需求文档</div>
+    <h1>把模糊的原始信息，<br>澄清成一份<span class="hl">能落地的需求文档</span></h1>
+    <div class="cap-grid" id="capGrid"></div>
+  </div>
+</header>
+
+<section id="memory" class="section">
+  <div class="wrap">
+    <h2 class="section-title">分层记忆 · <span class="accent">多源归一化</span></h2>
+    <p class="section-sub">摘要作为索引，确保信息可信</p>
+    <div class="memory-flow">
+      <div class="mf-col">
+        <div class="ms-head">多源输入</div>
+        <div id="memorySources"></div>
+      </div>
+      <div class="mf-arrow">→</div>
+      <div class="mf-col">
+        <div class="ms-head">归一化</div>
+        <div class="mf-normalize">
+          <div class="norm-title" id="normTitle"></div>
+          <div class="norm-items" id="normItems"></div>
+        </div>
+      </div>
+      <div class="mf-arrow">→</div>
+      <div class="mf-col">
+        <div class="ms-head">分层记忆</div>
+        <div id="memorySummary"></div>
+        <div class="ms-note" id="memoryNote"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="agents" class="section">
+  <div class="wrap">
+    <h2 class="section-title">多 Agent <span class="accent">协作</span></h2>
+    <div class="table-wrap"><table class="agents-table" id="agentsTable"></table></div>
+  </div>
+</section>
+
+<section id="storage" class="section">
+  <div class="wrap">
+    <h2 class="section-title">持久<span class="accent">存储</span></h2>
+    <p class="section-sub">按项目制沉淀三层数据——每次澄清的原始文件、项目进展、session 细节都留痕，作为持续改进的数据源。</p>
+    <div class="storage-box">
+      <div class="storage-layer">
+        <div class="layer-title">① 原始文件层</div>
+        <div class="layer-files" id="storageFiles"></div>
+      </div>
+      <div class="storage-layer">
+        <div class="layer-title">② 项目进展层</div>
+        <div class="storage-table-wrap"><table class="storage-table" id="projectTable"></table></div>
+      </div>
+      <div class="storage-layer">
+        <div class="layer-title">③ 细节展开层</div>
+        <div class="storage-table-wrap"><table class="storage-table" id="sessionTable"></table></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="demo" class="section">
+  <div class="wrap">
+    <h2 class="section-title">目标<span class="accent">演示</span></h2>
+    <p class="section-sub">看 Agent 如何在群聊内协作，把模糊信息落地为需求文档</p>
+
+    <div class="example-selector" id="exampleSelector"></div>
+
+    <div class="chat">
+      <div class="chat-head">
+        <span class="chat-title" id="chatTitle"></span>
+        <span class="chat-sources" id="chatSources"></span>
+      </div>
+      <div class="chat-body" id="chatBody"></div>
+      <div class="chat-ctrl">
+        <button class="next-btn" id="playBtn">▶ 播放</button>
+        <button class="next-btn replay" id="replayBtn" style="display:none">↻ 重新播放</button>
+        <span class="round-progress" id="roundProgress"></span>
+      </div>
+    </div>
+
+    <div id="docArea" class="hidden">
+      <h3 class="sub-title">需求已提单 · 开发文档</h3>
+      <div class="doc-card" id="docCard"></div>
+    </div>
+
+    <div id="reviewArea" class="hidden">
+      <div class="review-panel">
+        <div class="review-actions">
+          <button class="review-btn approve" id="approveBtn">✓ 采纳</button>
+          <button class="review-btn reject" id="rejectBtn">✗ 驳回</button>
+        </div>
+        <div class="review-status" id="reviewStatus"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="components" class="section">
+  <div class="wrap">
+    <h2 class="section-title">平台<span class="accent">架构</span></h2>
+    <p class="section-sub">自下而上分层：底座支撑能力，能力经由连接层对接外部生态。</p>
+    <div class="platform-box" id="platformBox"></div>
+  </div>
+</section>
+
+<section id="plan" class="section">
+  <div class="wrap">
+    <h2 class="section-title">完成<span class="accent">计划</span></h2>
+    <p class="section-sub">3 个月跑通最小闭环，更多时间留给持续改进。</p>
+    <div class="roadmap" id="roadmapBox"></div>
+  </div>
+</section>
+
+<section id="next" class="section">
+  <div class="wrap">
+    <h2 class="section-title">继续<span class="accent">查看</span></h2>
+    <p class="section-sub">二郎把需求澄清到位，产出可落地的需求文档。下一步，文档进入开发自动化流水线——Agent 拆任务、写代码、跑测试、过门禁，人只审关键节点。</p>
+    <a class="next-card" href="../automation/index.html">
+      <span class="next-main">
+        <span class="next-name">开发自动化</span>
+        <span class="next-desc">需求文档到上线的自动化</span>
+      </span>
+      <span class="next-go">进入演示 →</span>
+    </a>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="wrap">
+    <p><span class="accent">二郎 Erlang</span> · 需求澄清工具</p>
+    <p>分层记忆 · 多 Agent 协作 · 持久存储</p>
+  </div>
+</footer>
+
+<nav class="site-nav" data-navbar></nav>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+<script src="../js/nav.js"></script>
+</body>
+</html>

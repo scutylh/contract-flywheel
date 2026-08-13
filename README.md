@@ -1,31 +1,28 @@
 # contract-flywheel
 
-**从一段会议纪要到自进化飞轮 —— 合同审核 Agent 的三圈迭代。**
+**开发流程的 AI 化 —— 从需求澄清到开发自动化。**
 
-入职前作业。别人交规划，这里交的是规划的第一步已经在跑的样子：同一套合同审核系统迭代三圈，人机分工从「人 70% / Agent 30%」走到「Agent 95% / 人仅确认」。
+入职前作业。别人交规划，这里交的是规划的第一步已经在跑的样子：把软件开发最贵的环节——「从人说的话到能跑的代码」——拆成两半，用两个工具补上。
 
-- 圈 1 · 从 0 到可用：会议纪要 → 需求单 → 人机协作开发 → 双审上线（合同关键信息提取）
-- 圈 2 · 听懂反馈：模糊反馈 → Agent 反问澄清 → 边界收窄 → 账期提醒上线
-- 圈 3 · 接近自治：新需求 → Agent 检索历史资产自主开发 → Agent 评审 → 人工一键确认
+- **二郎 Erlang · 需求澄清工具**：从模糊的原始信息到可落地的需求文档
+- **开发自动化**：需求澄清之后，开发过程的自动化
 
 ## 仓库结构
 
 ```
 ├── docs/
-│   ├── vision.md        # 3-5 年愿景原文
+│   ├── vision.md        # 个人愿景（非共识，供参考）
 │   └── PLAN-v0.1.md     # 作业计划（版本化管理）
-├── harness/             # 开发期 mini-harness（fixture 驱动，见 harness/README.md）
-├── traces/              # 三圈执行轨迹 JSON（页面回放的唯一数据源）
+├── harness/             # 开发期 mini-harness（fixture 驱动）
+├── traces/              # 执行轨迹 JSON（数据源）
+├── demos/               # 独立 demo
 ├── scripts/
-│   └── build-traces.mjs # traces/*.json → site/js/traces.js 打包脚本
+│   └── verify-site.mjs  # 站点自检
 └── site/                # 纯静态演示站（nginx 直发即可）
-    ├── index.html       # 第 1 章 首页：hero + 飞轮三圈 + 翻页提示
-    ├── loops/           # 第 2-4 章：每圈一页（人机分工矩阵 → 回放横轴 → 产品演示）
-    │   ├── loop-1.html
-    │   ├── loop-2.html
-    │   └── loop-3.html  # 末尾含三圈「演一遍」recap
-    ├── plan90.html      # 第 5 章：入职 90 天 + 三张表（权限/能力边界/回放评估）
-    └── appendix.html    # 第 6 章：附录（开发方式 + 源码 + 诚实声明）
+    ├── index.html       # 首页：两个入口（需求澄清 + 开发自动化）
+    ├── automation.html  # 开发自动化（人机愿景 / 流水线 / 中台架构 / 产品设计 / 节奏）
+    ├── appendix.html    # 附录（开发方式 + 源码 + 诚实声明）
+    └── erlang/          # 二郎 Erlang · 需求澄清工具（独立 demo）
 ```
 
 ## 本地预览
@@ -37,15 +34,13 @@ cd site && python -m http.server 8080
 
 ## 工作流
 
-1. 修改/生成轨迹：`traces/loopN.json`
-2. 校验：`python harness/main.py`
-3. 打包进页面：`node scripts/build-traces.mjs`
-4. 站点自检：`node scripts/verify-site.mjs`（语法 / 轨迹同步 / 链接与锚点可达）
-5. 部署：`site/` 整个目录 nginx 直发，无常驻后端
+1. 修改页面 / 数据
+2. 站点自检：`node scripts/verify-site.mjs`（语法 / 章节 / 链接与锚点可达）
+3. 部署：`site/` 整个目录 nginx 直发，无常驻后端
 
 ## 诚实声明
 
-演示业务数据为模拟数据；执行轨迹由 mini-harness 组织，LLM 调用以录制 fixture 回放呈现。选择回放而非实时调用，是为保证评审任何时刻打开都看到一致、可复盘的过程。
+演示业务数据为模拟数据；执行轨迹由自研 mini-harness 组织，LLM 调用以录制 fixture 回放呈现。选择回放而非实时调用，是为保证评审任何时刻打开都看到一致、可复盘的过程。
 
 ---
 
